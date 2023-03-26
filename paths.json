@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "'@database/*": [
+        "database/*"
+      ],
+      "database": [
+        "database/index"
+      ],
+      "modules/*": [
+        "modules/*"
+      ],
+      "modules": [
+        "modules/index"
+      ],
+      "routes/*": [
+        "routes/*"
+      ],
+      "routes": [
+        "routes/index"
+      ],
+      "types/*": [
+        "types/*"
+      ],
+      "types": [
+        "types/index"
+      ],
+      "utils/*": [
+        "utils/*"
+      ],
+      "utils": [
+        "utils/index"
+      ]
+    }
+  }
+}
