@@ -1,0 +1,24 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "eslint:recommended",
+    "prettier",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "rules": {
+    "camelcase": "off",
+    "@typescript-eslint/camelcase": "off",
+    "no-unused-vars": "warn",
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "no-undef":"off",
+    "no-unsafe-finally": "warn"
+    // "@typescript-eslint/no-var-requires": "warn"
+  }
+}
