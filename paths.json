@@ -2,6 +2,12 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
+      "config/*": [
+        "config/*"
+      ],
+      "config": [
+        "config/index"
+      ],
       "'@database/*": [
         "database/*"
       ],
