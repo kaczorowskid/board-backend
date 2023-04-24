@@ -1,5 +1,4 @@
 export enum ResetPasswordEnum {
-  NO_USER_IN_THE_DATABASE = "No user in the database",
-  NEW_PASSWORD_HAS_BEEN_SET = "New password has been set",
-  WRONG_OLD_PASSWORD = "Wrong old password",
+  PASSWORD_HAS_BEEN_RESET = "Password has been reset",
+  NO_EMAIL_IN_THE_DATABASE = "No email in database",
 }

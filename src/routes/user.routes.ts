@@ -1,11 +1,11 @@
 import { Router } from "express";
 import {
   confirmAccount,
-  generateResetPassword,
+  resetPassword,
   getUser,
   login,
   register,
-  resetPassword,
+  setNewPassword,
   updateUser,
 } from "../modules";
 
@@ -15,6 +15,6 @@ userRouter.post("/register", register);
 userRouter.post("/login", login);
 userRouter.get("/confirm-account/:token", confirmAccount);
 userRouter.get("/:email", getUser);
-userRouter.post("/generate-reset", generateResetPassword);
-userRouter.post("/reset-password", resetPassword);
+userRouter.post("/generate-reset", resetPassword);
+userRouter.post("/reset-password", setNewPassword);
 userRouter.patch("/update/:id", updateUser);
