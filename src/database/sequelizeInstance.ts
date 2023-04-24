@@ -1,5 +1,5 @@
-import { config } from "config";
 import { Dialect, Options, Sequelize } from "sequelize";
+import { config } from "../config";
 
 const isDevelopment = config["env"] === "development";
 const logging = isDevelopment ? (args: any) => console.trace(args) : false;
@@ -9,7 +9,7 @@ const { dialect, database, host, password, username } = config;
 const sequelizeConfig: Options = {
   dialect: dialect as Dialect,
   host,
-  logging,
+  // logging,
   pool: {
     max: 60,
     min: 1,
@@ -26,9 +26,11 @@ const sequelizeConfig: Options = {
   },
 };
 
-export const sequelize = new Sequelize(
+const sequelizeInstance = new Sequelize(
   database,
   username,
   password,
   sequelizeConfig
 );
+
+export { sequelizeInstance };

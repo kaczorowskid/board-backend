@@ -5,9 +5,7 @@ if (process.env.NO_ENVFILE === null || process.env.NO_ENVFILE === undefined) {
 }
 
 import { databaseConfig } from "./databaseConfig";
-import { developmentConfig } from "./development";
 
 export const config = {
-  ...developmentConfig,
   ...databaseConfig,
 };
