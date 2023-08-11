@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { sequelizeWithError } from "../../../../database/sequelizeWithError";
-import { UserModel } from "../../models";
+import { UserModel } from "../../../../models";
 import { User, UserResponse } from "../../types";
 import { isConfirmed, isDoesNotConfirmed } from "./confirmAccount.helper";
 import { ConfirmAccount } from "./confirmAccount.type";

@@ -1,5 +1,5 @@
 import { sequelizeWithError } from "../../../../database/sequelizeWithError";
-import { UserModel } from "../../models";
+import { UserModel } from "../../../../models";
 import { UserResponse } from "../../types";
 import { getUserData, userDoesNotExist } from "./getUser.helper";
 import { GetUser } from "./GetUser.types";

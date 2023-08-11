@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 import { sequelizeWithError } from "../../../../database";
 import { mailer, MailType } from "../../../../utils";
-import { UserModel } from "../../models";
+import { UserModel } from "../../../../models";
 import { UserResponse } from "../../types";
 import { userHasBeenRegister, userExistInTheDatabase } from "./register.helper";
 import { Register } from "./register.type";
