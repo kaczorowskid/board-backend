@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { sequelizeWithError } from "../../../../database";
 import { mailer, MailType } from "../../../../utils";
-import { UserModel } from "../../models";
+import { UserModel } from "../../../../models";
 import { UserResponse } from "../../types";
 import { ResetPassword } from "./resetPassword.type";
 import {

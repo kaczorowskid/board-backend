@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { sequelizeWithError } from "../../../../database";
-import { UserModel } from "../../models";
+import { UserModel } from "../../../../models";
 import { User, UserResponse } from "../../types";
 import { userDoesNotExist, isLogged, wrongPass } from "./login.helper";
 import { Login, Token } from "./login.type";
