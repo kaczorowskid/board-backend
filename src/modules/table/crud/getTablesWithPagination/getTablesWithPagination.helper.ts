@@ -11,6 +11,6 @@ export const tableExist = (
 });
 
 export const tableDoesNotExistInTheDatabase = (): DataResponse<string> => ({
-  statusCode: Number(HTTPStatus.UNAUTHORIZED),
+  statusCode: Number(HTTPStatus.NOT_FOUND),
   data: GetTablesWithPaginationEnum.TABLE_DOES_NOT_EXIST_IN_THE_DATABASE,
 });

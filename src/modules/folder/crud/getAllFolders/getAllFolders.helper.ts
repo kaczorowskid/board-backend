@@ -9,6 +9,6 @@ export const foldersExist = (data: Folder[]): DataResponse<Folder[]> => ({
 });
 
 export const foldersDoesNotExistInTheDatabase = (): DataResponse<string> => ({
-  statusCode: Number(HTTPStatus.UNAUTHORIZED),
+  statusCode: Number(HTTPStatus.NOT_FOUND),
   data: GetAllFoldersEnum.FOLDERS_DOES_NOT_EXIST_IN_THE_DATABASE,
 });

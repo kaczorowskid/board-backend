@@ -15,6 +15,6 @@ export const wrongPass = (): DataResponse<string> => ({
 });
 
 export const userDoesNotExist = (): DataResponse<string> => ({
-  statusCode: Number(HTTPStatus.UNAUTHORIZED),
+  statusCode: Number(HTTPStatus.NOT_FOUND),
   data: LoginEnum.USER_DOES_NOT_EXIST,
 });
