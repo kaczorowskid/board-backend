@@ -1,16 +1,16 @@
 import { sequelizeWithError } from "../../../../database/sequelizeWithError";
 import { UserModel } from "../../../../models";
 import { UserResponse } from "../../types";
+import { GetUser } from "./getUser.types";
 import { getUserData, userDoesNotExist } from "./getUser.helper";
-import { GetUser } from "./GetUser.types";
 
 export const getUserService = async ({
-  email,
+  id,
 }: GetUser): Promise<UserResponse> => {
   return sequelizeWithError<Promise<UserResponse>>(async () => {
     const userData = await UserModel.findOne({
-      where: { email },
-      attributes: ["id", "email", "is_active"],
+      where: { id },
+      attributes: ["id", "email", "is_active", "name"],
     });
 
     if (userData) {

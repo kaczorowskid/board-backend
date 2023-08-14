@@ -1,3 +1,3 @@
 export interface GetUser {
-  email: string;
+  id: string;
 }
