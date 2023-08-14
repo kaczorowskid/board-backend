@@ -1,23 +1,26 @@
+import { Op, where } from "sequelize";
 import { sequelizeWithError } from "../../../../database";
 import { TableModel } from "../../../../models";
-import { somethingWentWrong } from "../../../helpers";
 import {
   tableDoesNotExistInTheDatabase,
   tableExist,
 } from "./getTablesWithPagination.helper";
 import { GetTablesWithPaginationQuery } from "./getTablesWithPagination.type";
+import { paginationHelper, somethingWentWrong } from "../../../helpers";
 
 export const getTablesWithPaginationService = async ({
-  skip,
-  take,
+  offset,
+  limit,
+  search_value: searchValue,
   user_id,
   folder_id,
 }: GetTablesWithPaginationQuery) => {
   const [data, error] = await sequelizeWithError(async () => {
     const { count, rows: data } = await TableModel.findAndCountAll({
-      offset: skip,
-      limit: take,
-      where: { user_id, ...(!!!folder_id ? "" : { folder_id }) },
+      ...paginationHelper(
+        { offset, limit, searchValue },
+        { user_id, ...(folder_id && { folder_id }) }
+      ),
     });
 
     if (data) {

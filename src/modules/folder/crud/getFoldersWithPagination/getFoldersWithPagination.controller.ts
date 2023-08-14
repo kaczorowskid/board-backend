@@ -1,24 +1,17 @@
 import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
-import { getTablesWithPaginationService } from "./getTablesWithPagination.service";
-import { GetTablesWithPaginationQuery } from "./getTablesWithPagination.type";
+import { getFoldersWithPaginationService } from "./getFoldersWithPagination.service";
+import { GetFoldersWithPaginationQuery } from "./getFoldersWithPagination.type";
 
-export const getTablesWithPagination: ExpressMiddleware<
+export const getFoldersWithPagination: ExpressMiddleware<
   unknown,
   unknown,
-  GetTablesWithPaginationQuery
+  GetFoldersWithPaginationQuery
 > = async (req, res) => {
-  const {
-    user_id,
-    folder_id,
-    limit,
-    offset,
-    search_value: searchValue,
-  } = req.query;
+  const { user_id, limit, offset, search_value: searchValue } = req.query;
 
-  const data = await getTablesWithPaginationService({
+  const data = await getFoldersWithPaginationService({
     user_id,
-    folder_id,
     limit: Number(limit),
     offset: Number(offset),
     search_value: searchValue,
