@@ -8,6 +8,6 @@ export const passwordHasBeenReset = (): DataResponse<string> => ({
 });
 
 export const noEmailInTheDatabase = (): DataResponse<string> => ({
-  statusCode: Number(HTTPStatus.FORBIDDEN),
+  statusCode: Number(HTTPStatus.NOT_FOUND),
   data: ResetPasswordEnum.NO_EMAIL_IN_THE_DATABASE,
 });

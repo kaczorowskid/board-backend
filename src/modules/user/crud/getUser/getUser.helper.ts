@@ -9,6 +9,6 @@ export const getUserData = (data: User): DataResponse<User> => ({
 });
 
 export const userDoesNotExist = (): DataResponse<string> => ({
-  statusCode: Number(HTTPStatus.CONFLICT),
+  statusCode: Number(HTTPStatus.NOT_FOUND),
   data: GetUserEnum.USER_DOES_NOT_EXIST,
 });
