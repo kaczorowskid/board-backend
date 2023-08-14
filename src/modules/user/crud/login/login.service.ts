@@ -22,7 +22,7 @@ export const loginUserService = async ({
         { expiresIn: "2h" }
       );
       return passwordHash
-        ? isLogged({ ...userData, token: accessToken })
+        ? isLogged({ ...userData.dataValues, token: accessToken })
         : wrongPass();
     } else {
       return userDoesNotExist();
