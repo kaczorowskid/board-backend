@@ -6,6 +6,7 @@ import {
   tableExistInTheDatabase,
   tableHasBeenCreated,
 } from "./createTable.helper";
+import { somethingWentWrong } from "../../../helpers";
 
 export const createTableService = async ({
   name,
@@ -15,7 +16,7 @@ export const createTableService = async ({
   user_id,
   folder_id,
 }: CreateTableParams & CreateTable) => {
-  return sequelizeWithError(async () => {
+  const [data, error] = await sequelizeWithError(async () => {
     const isTableExist = await TableModel.count({ where: { name } });
 
     if (!isTableExist) {
@@ -35,4 +36,10 @@ export const createTableService = async ({
       return tableExistInTheDatabase();
     }
   });
+
+  if (error) {
+    return somethingWentWrong({ error });
+  }
+
+  return data;
 };

@@ -2,15 +2,12 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { sequelizeWithError } from "../../../../database";
 import { UserModel } from "../../../../models";
-import { User, UserResponse } from "../../types";
 import { userDoesNotExist, isLogged, wrongPass } from "./login.helper";
-import { Login, Token } from "./login.type";
+import { Login } from "./login.type";
+import { somethingWentWrong } from "../../../helpers";
 
-export const loginUserService = async ({
-  email,
-  password,
-}: Login): Promise<UserResponse<User & Token>> => {
-  return sequelizeWithError<Promise<UserResponse<User & Token>>>(async () => {
+export const loginUserService = async ({ email, password }: Login) => {
+  const [data, error] = await sequelizeWithError(async () => {
     const userData = await UserModel.findOne({
       where: { email },
     });
@@ -28,4 +25,10 @@ export const loginUserService = async ({
       return userDoesNotExist();
     }
   });
+
+  if (error) {
+    return somethingWentWrong({ error });
+  }
+
+  return data;
 };

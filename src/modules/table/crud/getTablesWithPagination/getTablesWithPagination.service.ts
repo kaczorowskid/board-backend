@@ -1,5 +1,6 @@
 import { sequelizeWithError } from "../../../../database";
 import { TableModel } from "../../../../models";
+import { somethingWentWrong } from "../../../helpers";
 import {
   tableDoesNotExistInTheDatabase,
   tableExist,
@@ -12,7 +13,7 @@ export const getTablesWithPaginationService = async ({
   user_id,
   folder_id,
 }: GetTablesWithPaginationQuery) => {
-  return sequelizeWithError(async () => {
+  const [data, error] = await sequelizeWithError(async () => {
     const { count, rows: data } = await TableModel.findAndCountAll({
       offset: skip,
       limit: take,
@@ -25,4 +26,10 @@ export const getTablesWithPaginationService = async ({
       return tableDoesNotExistInTheDatabase();
     }
   });
+
+  if (error) {
+    return somethingWentWrong({ error });
+  }
+
+  return data;
 };

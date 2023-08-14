@@ -1,4 +1,5 @@
 import { ExpressMiddleware } from "../../../../types";
+import { HTTPStatus } from "../../../../utils";
 import { getAllTablesService } from "./getAllTables.service";
 import { GetAllTablesQuery } from "./getAllTables.type";
 
@@ -7,9 +8,13 @@ export const getAllTables: ExpressMiddleware<
   unknown,
   GetAllTablesQuery
 > = async (req, res) => {
-  const { statusCode, data } = await getAllTablesService(req.query);
+  const data = await getAllTablesService(req.query);
 
   if (data) {
-    res.status(statusCode).json(data);
+    if (data.statusCode !== Number(HTTPStatus.OK)) {
+      res.status(data.statusCode).json({ result: data.data });
+    } else {
+      res.status(data.statusCode).json(data.data);
+    }
   }
 };

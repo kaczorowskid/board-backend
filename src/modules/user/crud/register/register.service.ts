@@ -4,16 +4,16 @@ import { v4 as uuidv4 } from "uuid";
 import { sequelizeWithError } from "../../../../database";
 import { mailer, MailType } from "../../../../utils";
 import { UserModel } from "../../../../models";
-import { UserResponse } from "../../types";
 import { userHasBeenRegister, userExistInTheDatabase } from "./register.helper";
 import { Register } from "./register.type";
+import { somethingWentWrong } from "../../../helpers";
 
 export const registerUserService = async ({
   email,
   password,
   name,
-}: Register): Promise<UserResponse> => {
-  return sequelizeWithError<Promise<UserResponse>>(async () => {
+}: Register) => {
+  const [data, error] = await sequelizeWithError(async () => {
     const isUserExist = await UserModel.count({ where: { email } });
 
     if (!isUserExist) {
@@ -39,4 +39,10 @@ export const registerUserService = async ({
       return userExistInTheDatabase();
     }
   });
+
+  if (error) {
+    return somethingWentWrong({ error });
+  }
+
+  return data;
 };

@@ -1,11 +1,11 @@
-export const sequelizeWithError = <T>(callback: () => T): T => {
-  let data: T | undefined = undefined;
-
+export const sequelizeWithError = async <T>(
+  callback: () => Promise<T>
+): Promise<[T | undefined, string | undefined]> => {
   try {
-    data = callback();
+    const data = await callback();
+    return [data, undefined];
   } catch (e) {
-    console.log("error ", e);
-  } finally {
-    return data as T;
+    const error = e as unknown as Error;
+    return [undefined, error.message];
   }
 };

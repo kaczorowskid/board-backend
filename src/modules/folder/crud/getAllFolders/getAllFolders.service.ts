@@ -7,9 +7,10 @@ import {
   foldersExist,
 } from "./getAllFolders.helper";
 import { GetAllFoldersQuery } from "./getAllFolders.type";
+import { somethingWentWrong } from "../../../helpers";
 
 export const getAllFoldersService = async ({ user_id }: GetAllFoldersQuery) => {
-  return sequelizeWithError(async () => {
+  const [data, error] = await sequelizeWithError(async () => {
     const data = await FolderModel.findAll({
       where: { user_id },
       attributes: {
@@ -33,4 +34,10 @@ export const getAllFoldersService = async ({ user_id }: GetAllFoldersQuery) => {
       return foldersDoesNotExistInTheDatabase();
     }
   });
+
+  if (error) {
+    return somethingWentWrong({ error });
+  }
+
+  return data;
 };

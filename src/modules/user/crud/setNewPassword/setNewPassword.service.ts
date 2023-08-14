@@ -2,20 +2,21 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { sequelizeWithError } from "../../../../database";
 import { UserModel } from "../../../../models";
-import { User, UserResponse } from "../../types";
+import { User } from "../../types";
 import { SetNewPassword } from "./setNewPassword.type";
 import {
   newPasswordHasBeenSet,
   noUserInTheDatabase,
   wrongOldPassword,
 } from "./setNewPassword.helper";
+import { somethingWentWrong } from "../../../helpers";
 
 export const setNewPasswordService = async ({
   token,
   password,
   oldPassword,
-}: SetNewPassword): Promise<UserResponse> => {
-  return sequelizeWithError<Promise<UserResponse>>(async () => {
+}: SetNewPassword) => {
+  const [data, error] = await sequelizeWithError(async () => {
     const userData = jwt.verify(token, process.env.RESET_PASSWORD_KEY!) as User;
 
     const user = await UserModel.findOne({
@@ -41,4 +42,10 @@ export const setNewPasswordService = async ({
       return noUserInTheDatabase();
     }
   });
+
+  if (error) {
+    return somethingWentWrong({ error });
+  }
+
+  return data;
 };

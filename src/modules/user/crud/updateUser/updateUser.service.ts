@@ -1,14 +1,14 @@
 import { sequelizeWithError } from "../../../../database/sequelizeWithError";
 import { UserModel } from "../../../../models";
-import { UserResponse } from "../../types";
 import { Update, UpdateParams } from "./updateUser.type";
 import { hasBeenUpdated, userDoesNotExist } from "./updateUser.helper";
+import { somethingWentWrong } from "../../../helpers";
 
 export const updateUserService = async ({
   id,
   name,
-}: UpdateParams & Update): Promise<UserResponse> => {
-  return sequelizeWithError<Promise<UserResponse>>(async () => {
+}: UpdateParams & Update) => {
+  const [data, error] = await sequelizeWithError(async () => {
     const user = await UserModel.findOne({ where: { id } });
 
     if (user) {
@@ -19,4 +19,10 @@ export const updateUserService = async ({
       return userDoesNotExist();
     }
   });
+
+  if (error) {
+    return somethingWentWrong({ error });
+  }
+
+  return data;
 };
