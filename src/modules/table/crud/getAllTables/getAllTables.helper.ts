@@ -1,13 +1,14 @@
 import { HTTPStatus } from "../../../../utils";
-import { Table, TableResponse } from "../../types";
+import { DataResponse } from "../../../helpers";
+import { Table } from "../../types";
 import { GetAllDataEnum } from "./getAllTables.enum";
 
-export const tablesExist = (data: Table[]): TableResponse<Table[]> => ({
+export const tablesExist = (data: Table[]): DataResponse<Table[]> => ({
   statusCode: Number(HTTPStatus.CONFLICT),
-  data,
+  data: data || [],
 });
 
-export const tablesDoesNotExistInTheDatabase = (): TableResponse<string> => ({
+export const tablesDoesNotExistInTheDatabase = (): DataResponse<string> => ({
   statusCode: Number(HTTPStatus.UNAUTHORIZED),
   data: GetAllDataEnum.TABLES_DOES_NOT_EXIST_IN_THE_DATABASE,
 });

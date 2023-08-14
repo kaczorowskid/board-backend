@@ -1,13 +1,17 @@
 import { ExpressMiddleware } from "../../../../types";
+import { HTTPStatus } from "../../../../utils";
 import { getUserService } from "./getUser.service";
 
 export const getUser: ExpressMiddleware = async (req, res) => {
-  console.log("id ", req.header("user-token"));
-  const { statusCode, data } = await getUserService({
+  const data = await getUserService({
     id: req.header("user-token") as string,
   });
 
   if (data) {
-    res.status(statusCode).json(data);
+    if (data.statusCode !== Number(HTTPStatus.OK)) {
+      res.status(data.statusCode).json({ result: data.data });
+    } else {
+      res.status(data.statusCode).json(data.data);
+    }
   }
 };

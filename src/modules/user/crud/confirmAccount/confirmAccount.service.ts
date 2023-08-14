@@ -1,14 +1,13 @@
 import jwt from "jsonwebtoken";
 import { sequelizeWithError } from "../../../../database/sequelizeWithError";
 import { UserModel } from "../../../../models";
-import { User, UserResponse } from "../../types";
+import { User } from "../../types";
 import { isConfirmed, isDoesNotConfirmed } from "./confirmAccount.helper";
 import { ConfirmAccount } from "./confirmAccount.type";
+import { somethingWentWrong } from "../../../helpers";
 
-export const confirmAccountService = async ({
-  token,
-}: ConfirmAccount): Promise<UserResponse> => {
-  return sequelizeWithError<Promise<UserResponse>>(async () => {
+export const confirmAccountService = async ({ token }: ConfirmAccount) => {
+  const [data, error] = await sequelizeWithError(async () => {
     const userId = jwt.verify(token, process.env.EMAIL_KEY!) as User;
 
     if (userId) {
@@ -18,4 +17,10 @@ export const confirmAccountService = async ({
       return isDoesNotConfirmed();
     }
   });
+
+  if (error) {
+    return somethingWentWrong({ error });
+  }
+
+  return data;
 };

@@ -6,13 +6,14 @@ import {
   folderExistInTheDatabase,
   folderHasBeenCreated,
 } from "./createFolder.helper";
+import { somethingWentWrong } from "../../../helpers";
 
 export const createFolderService = async ({
   name,
   description,
   user_id,
 }: CreateFolder) => {
-  return sequelizeWithError(async () => {
+  const [data, error] = await sequelizeWithError(async () => {
     const isFolderExist = await FolderModel.count({ where: { name } });
 
     if (!isFolderExist) {
@@ -28,4 +29,10 @@ export const createFolderService = async ({
       return folderExistInTheDatabase();
     }
   });
+
+  if (error) {
+    return somethingWentWrong({ error });
+  }
+
+  return data;
 };

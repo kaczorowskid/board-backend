@@ -1,4 +1,5 @@
 import { ExpressMiddleware } from "../../../../types";
+import { HTTPStatus } from "../../../../utils";
 import { createFolderService } from "./createFolder.service";
 import { CreateFolder } from "./createFolder.type";
 
@@ -6,11 +7,15 @@ export const createFolder: ExpressMiddleware<unknown, CreateFolder> = async (
   req,
   res
 ) => {
-  const { statusCode, data } = await createFolderService({
+  const data = await createFolderService({
     ...req.body,
   });
 
   if (data) {
-    res.status(statusCode).json(data);
+    if (data.statusCode !== Number(HTTPStatus.OK)) {
+      res.status(data.statusCode).json({ result: data.data });
+    } else {
+      res.status(data.statusCode).json(data.data);
+    }
   }
 };

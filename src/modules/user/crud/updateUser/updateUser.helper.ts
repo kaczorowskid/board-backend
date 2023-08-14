@@ -1,13 +1,13 @@
 import { HTTPStatus } from "../../../../utils";
-import { UserResponse } from "../../types";
+import { DataResponse } from "../../../helpers";
 import { UpdateEnum } from "./updateUser.enum";
 
-export const hasBeenUpdated = (): UserResponse => ({
+export const hasBeenUpdated = (): DataResponse<string> => ({
   statusCode: Number(HTTPStatus.CREATED),
   data: UpdateEnum.HAS_BEEN_UPDATED,
 });
 
-export const userDoesNotExist = (): UserResponse => ({
+export const userDoesNotExist = (): DataResponse<string> => ({
   statusCode: Number(HTTPStatus.UNAUTHORIZED),
   data: UpdateEnum.USER_DOES_NOT_EXIST,
 });

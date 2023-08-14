@@ -1,13 +1,14 @@
 import { HTTPStatus } from "../../../../utils";
-import { User, UserResponse } from "../../types";
+import { DataResponse } from "../../../helpers";
+import { User } from "../../types";
 import { GetUserEnum } from "./getUser.enum";
 
-export const getUserData = (data: User): UserResponse => ({
+export const getUserData = (data: User): DataResponse<User> => ({
   statusCode: Number(HTTPStatus.OK),
   data,
 });
 
-export const userDoesNotExist = (): UserResponse => ({
+export const userDoesNotExist = (): DataResponse<string> => ({
   statusCode: Number(HTTPStatus.CONFLICT),
   data: GetUserEnum.USER_DOES_NOT_EXIST,
 });

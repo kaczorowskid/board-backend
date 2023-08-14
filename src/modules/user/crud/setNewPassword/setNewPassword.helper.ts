@@ -1,18 +1,18 @@
 import { HTTPStatus } from "../../../../utils";
-import { UserResponse } from "../../types";
+import { DataResponse } from "../../../helpers";
 import { SetNewPassworddEnum } from "./setNewPassword.enum";
 
-export const noUserInTheDatabase = (): UserResponse => ({
+export const noUserInTheDatabase = (): DataResponse<string> => ({
   statusCode: Number(HTTPStatus.CONFLICT),
   data: SetNewPassworddEnum.NO_USER_IN_THE_DATABASE,
 });
 
-export const newPasswordHasBeenSet = (): UserResponse => ({
+export const newPasswordHasBeenSet = (): DataResponse<string> => ({
   statusCode: Number(HTTPStatus.CREATED),
   data: SetNewPassworddEnum.NEW_PASSWORD_HAS_BEEN_SET,
 });
 
-export const wrongOldPassword = (): UserResponse => ({
+export const wrongOldPassword = (): DataResponse<string> => ({
   statusCode: Number(HTTPStatus.CONFLICT),
   data: SetNewPassworddEnum.WRONG_OLD_PASSWORD,
 });

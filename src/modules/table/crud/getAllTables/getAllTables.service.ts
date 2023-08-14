@@ -5,9 +5,10 @@ import {
   tablesDoesNotExistInTheDatabase,
   tablesExist,
 } from "./getAllTables.helper";
+import { somethingWentWrong } from "../../../helpers";
 
 export const getAllTablesService = async ({ user_id }: GetAllTablesQuery) => {
-  return sequelizeWithError(async () => {
+  const [data, error] = await sequelizeWithError(async () => {
     const tableData = await TableModel.findAll({
       where: { user_id },
     });
@@ -18,4 +19,10 @@ export const getAllTablesService = async ({ user_id }: GetAllTablesQuery) => {
       return tablesDoesNotExistInTheDatabase();
     }
   });
+
+  if (error) {
+    return somethingWentWrong({ error });
+  }
+
+  return data;
 };

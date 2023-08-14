@@ -1,5 +1,6 @@
 import { ExpressMiddleware } from "../../../../types";
-import { getAllFoldersService } from "./getAllFolder.service";
+import { HTTPStatus } from "../../../../utils";
+import { getAllFoldersService } from "./getAllFolders.service";
 import { GetAllFoldersQuery } from "./getAllFolders.type";
 
 export const getAllFolders: ExpressMiddleware<
@@ -7,9 +8,13 @@ export const getAllFolders: ExpressMiddleware<
   unknown,
   GetAllFoldersQuery
 > = async (req, res) => {
-  const { statusCode, data } = await getAllFoldersService(req.query);
+  const data = await getAllFoldersService(req.query);
 
   if (data) {
-    res.status(statusCode || 400).json(data);
+    if (data.statusCode !== Number(HTTPStatus.OK)) {
+      res.status(data.statusCode).json({ result: data.data });
+    } else {
+      res.status(data.statusCode).json(data.data);
+    }
   }
 };

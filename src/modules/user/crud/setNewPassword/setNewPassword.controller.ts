@@ -1,4 +1,5 @@
 import { ExpressMiddleware } from "../../../../types";
+import { HTTPStatus } from "../../../../utils";
 import { setNewPasswordService } from "./setNewPassword.service";
 import { SetNewPassword } from "./setNewPassword.type";
 
@@ -6,9 +7,13 @@ export const setNewPassword: ExpressMiddleware<
   unknown,
   SetNewPassword
 > = async (req, res) => {
-  const { statusCode, data } = await setNewPasswordService(req.body);
+  const data = await setNewPasswordService(req.body);
 
   if (data) {
-    res.status(statusCode).json(data);
+    if (data.statusCode !== Number(HTTPStatus.OK)) {
+      res.status(data.statusCode).json({ result: data.data });
+    } else {
+      res.status(data.statusCode).json(data.data);
+    }
   }
 };

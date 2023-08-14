@@ -1,13 +1,11 @@
 import { sequelizeWithError } from "../../../../database/sequelizeWithError";
 import { UserModel } from "../../../../models";
-import { UserResponse } from "../../types";
 import { GetUser } from "./getUser.types";
 import { getUserData, userDoesNotExist } from "./getUser.helper";
+import { somethingWentWrong } from "../../../helpers";
 
-export const getUserService = async ({
-  id,
-}: GetUser): Promise<UserResponse> => {
-  return sequelizeWithError<Promise<UserResponse>>(async () => {
+export const getUserService = async ({ id }: GetUser) => {
+  const [data, error] = await sequelizeWithError(async () => {
     const userData = await UserModel.findOne({
       where: { id },
       attributes: ["id", "email", "is_active", "name"],
@@ -19,4 +17,10 @@ export const getUserService = async ({
       return userDoesNotExist();
     }
   });
+
+  if (error) {
+    return somethingWentWrong({ error });
+  }
+
+  return data;
 };
