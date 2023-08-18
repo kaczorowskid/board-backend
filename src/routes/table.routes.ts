@@ -8,7 +8,7 @@ import {
 
 export const tableRouter = Router();
 
-tableRouter.post("/create/:user_id", createTable);
+tableRouter.post("/", createTable);
 tableRouter.get("/all/:user_id", getAllTables);
 tableRouter.get("/one/:user_id", getOneTable);
 tableRouter.get("/pagination", getTablesWithPagination);
