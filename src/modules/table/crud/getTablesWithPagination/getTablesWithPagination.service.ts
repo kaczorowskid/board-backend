@@ -19,7 +19,7 @@ export const getTablesWithPaginationService = async ({
     const { count, rows: data } = await TableModel.findAndCountAll({
       ...paginationHelper(
         { offset, limit, searchValue },
-        { user_id, ...(folder_id && { folder_id }) }
+        { user_id, ...(folder_id ? { folder_id } : {}) }
       ),
     });
 

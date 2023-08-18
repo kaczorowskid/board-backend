@@ -16,7 +16,7 @@ export const getFoldersWithPaginationService = async ({
   search_value: searchValue,
 }: GetFoldersWithPaginationQuery) => {
   const [data, error] = await sequelizeWithError(async () => {
-    const data = await FolderModel.findAll({
+    const { count, rows: data } = await FolderModel.findAndCountAll({
       ...paginationHelper({ offset, limit, searchValue }, { user_id }),
       attributes: {
         include: [
@@ -42,7 +42,7 @@ export const getFoldersWithPaginationService = async ({
     });
 
     if (data) {
-      return foldersExist(data);
+      return foldersExist({ count: count.length, data });
     } else {
       return foldersDoesNotExistInTheDatabase();
     }

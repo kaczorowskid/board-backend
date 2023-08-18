@@ -1,9 +1,11 @@
 import { HTTPStatus } from "../../../../utils";
 import { DataResponse } from "../../../helpers";
-import { Folder } from "../../types";
 import { GetFoldersWithPaginationEnum } from "./getFoldersWithPagination.enum";
+import { FoldersWithPagination } from "./getFoldersWithPagination.type";
 
-export const foldersExist = (data: Folder[]): DataResponse<Folder[]> => ({
+export const foldersExist = (
+  data: FoldersWithPagination
+): DataResponse<FoldersWithPagination> => ({
   statusCode: Number(HTTPStatus.OK),
   data,
 });
