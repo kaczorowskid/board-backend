@@ -5,15 +5,12 @@ import {
   tableDoesNotExistInTheDatabase,
   tableExist,
 } from "./getOneTable.helper";
-import { GetOneTable, GetOneTableParams } from "./getOneTables.type";
+import { GetOneTableParams } from "./getOneTables.type";
 
-export const getOneTableService = async ({
-  id,
-  user_id,
-}: GetOneTableParams & GetOneTable) => {
+export const getOneTableService = async ({ id }: GetOneTableParams) => {
   const [data, error] = await sequelizeWithError(async () => {
     const tableData = await TableModel.findOne({
-      where: { user_id, id },
+      where: { id },
     });
 
     if (tableData) {

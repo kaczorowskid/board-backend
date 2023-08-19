@@ -1,12 +1,12 @@
 import { Router } from "express";
 import {
   createFolder,
-  getAllFolders,
   getFoldersWithPagination,
+  getOneFolder,
 } from "../modules";
 
 export const folderRouter = Router();
 
-folderRouter.post("/create", createFolder);
-folderRouter.get("/all", getAllFolders);
-folderRouter.get("/pagination", getFoldersWithPagination);
+folderRouter.post("/", createFolder);
+folderRouter.get("/:id", getOneFolder);
+folderRouter.get("/", getFoldersWithPagination);
