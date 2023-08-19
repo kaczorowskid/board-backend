@@ -1,16 +1,13 @@
 import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
 import { getOneTableService } from "./getOneTable.service";
-import { GetOneTable, GetOneTableParams } from "./getOneTables.type";
+import { GetOneTableParams } from "./getOneTables.type";
 
-export const getOneTable: ExpressMiddleware<
-  GetOneTableParams,
-  GetOneTable
-> = async (req, res) => {
-  const data = await getOneTableService({
-    ...req.params,
-    ...req.body,
-  });
+export const getOneTable: ExpressMiddleware<GetOneTableParams> = async (
+  req,
+  res
+) => {
+  const data = await getOneTableService(req.params);
 
   if (data) {
     if (data.statusCode !== Number(HTTPStatus.OK)) {
