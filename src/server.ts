@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { folderRouter, tableRouter, userRouter } from "./routes";
+import { boardRouter, folderRouter, tableRouter, userRouter } from "./routes";
 
 const app = express();
 
@@ -13,5 +13,6 @@ app.use(cors());
 app.use("/user", userRouter);
 app.use("/table", tableRouter);
 app.use("/folder", folderRouter);
+app.use("/board", boardRouter);
 
 app.listen(PORT, () => console.log(`App listen on port ${PORT}`));

@@ -23,7 +23,7 @@ export const paginationHelper = (
   return {
     limit: query.limit || DefaultValues.LIMIT,
     offset: query.offset || DefaultValues.OFFSET,
-    order: [["name", "ASC"]],
+    // order: [["name", "ASC"]],
     where: {
       ...(query.searchValue
         ? {
