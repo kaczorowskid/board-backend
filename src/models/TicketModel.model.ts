@@ -38,7 +38,7 @@ TicketModel.init(
     prio: Sequelize.STRING,
     start: Sequelize.STRING,
     end: Sequelize.STRING,
-    order: Sequelize.NUMBER,
+    order: Sequelize.INTEGER,
     // comments: Sequelize.NUMBER,
     column_id: Sequelize.UUID,
     created_at: Sequelize.DATE,

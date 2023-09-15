@@ -1,7 +1,6 @@
 import { Op, Sequelize } from "sequelize";
 import { sequelizeWithError } from "../../../../database";
 import { FolderModel } from "../../../../models";
-import { TableModel } from "../../../../models";
 import { paginationHelper, somethingWentWrong } from "../../../helpers";
 import { GetFoldersWithPaginationQuery } from "./getFoldersWithPagination.type";
 import {
@@ -32,12 +31,6 @@ export const getFoldersWithPaginationService = async ({
           ],
         ],
       },
-      include: [
-        {
-          model: TableModel,
-          attributes: [],
-        },
-      ],
       group: ["folders.id"],
     });
 

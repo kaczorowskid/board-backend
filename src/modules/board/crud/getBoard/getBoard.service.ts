@@ -7,7 +7,7 @@ import { GetBoardParams } from "./getBoard.types";
 
 export const getBoardService = async ({ id }: GetBoardParams) => {
   const [data, error] = await sequelizeWithError(async () => {
-    const userData = await BoardModel.findOne({
+    const boardData = await BoardModel.findOne({
       where: { id },
       include: [
         {
@@ -25,8 +25,8 @@ export const getBoardService = async ({ id }: GetBoardParams) => {
       ],
     });
 
-    if (userData) {
-      return getBoardData(userData);
+    if (boardData) {
+      return getBoardData(boardData);
     } else {
       return boardDoesNotExist();
     }
