@@ -13,19 +13,19 @@ export const createTicketService = async ({
   prio,
   order,
   column_id,
+  user_id,
 }: CreateTicket) => {
   const [data, error] = await sequelizeWithError(async () => {
     const ticket = await TicketModel.create({
       id: uuidv4(),
-      // code: "",
       title,
       description,
       start,
       end,
       prio,
       order,
-      // comments: 0,
       column_id,
+      user_id,
     });
 
     return ticketHasBeenCreated(ticket);

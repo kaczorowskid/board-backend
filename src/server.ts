@@ -3,7 +3,13 @@ dotenv.config({ path: ".env.development" });
 
 import express from "express";
 import cors from "cors";
-import { boardRouter, folderRouter, tableRouter, userRouter } from "./routes";
+import {
+  boardRouter,
+  dashboardRouter,
+  folderRouter,
+  tableRouter,
+  userRouter,
+} from "./routes";
 
 const app = express();
 
@@ -17,5 +23,6 @@ app.use("/user", userRouter);
 app.use("/table", tableRouter);
 app.use("/folder", folderRouter);
 app.use("/board", boardRouter);
+app.use("/dashboard", dashboardRouter);
 
 app.listen(PORT, () => console.log(`App listen on port ${PORT}`));
