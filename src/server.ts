@@ -5,6 +5,7 @@ import express from "express";
 import cors from "cors";
 import {
   boardRouter,
+  calendarRouter,
   dashboardRouter,
   folderRouter,
   tableRouter,
@@ -24,5 +25,6 @@ app.use("/table", tableRouter);
 app.use("/folder", folderRouter);
 app.use("/board", boardRouter);
 app.use("/dashboard", dashboardRouter);
+app.use("/calendar", calendarRouter);
 
 app.listen(PORT, () => console.log(`App listen on port ${PORT}`));
