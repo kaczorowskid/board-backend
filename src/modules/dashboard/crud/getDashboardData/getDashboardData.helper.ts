@@ -1,6 +1,6 @@
 import { HTTPStatus } from "../../../../utils";
 import { DataResponse } from "../../../helpers";
-import { Dahsboard } from "../types/Dashboard.types";
+import { Dahsboard } from "../../types";
 import { GetDashboardDataEnum } from "./getDashboardData.enum";
 
 export const dashboardExist = (data: Dahsboard): DataResponse<Dahsboard> => ({

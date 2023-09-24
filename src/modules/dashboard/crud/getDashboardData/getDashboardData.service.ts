@@ -1,14 +1,17 @@
+import { Op } from "sequelize";
 import { sequelizeWithError } from "../../../../database";
-import { BoardModel, TicketModel } from "../../../../models";
+import { BoardModel, CalendarModel, TicketModel } from "../../../../models";
 import { somethingWentWrong } from "../../../helpers";
 import {
   dashboardDoesNotExistInTheDatabase,
   dashboardExist,
 } from "./getDashboardData.helper";
 import { GetDashboardDataParam } from "./getDashboardData.types";
+import dayjs from "dayjs";
 
 export const getDashboardDataService = async ({
   user_id,
+  date,
 }: GetDashboardDataParam) => {
   const [data, error] = await sequelizeWithError(async () => {
     const { count: boardsCount, rows: boardsData } =
@@ -23,6 +26,18 @@ export const getDashboardDataService = async ({
         limit: 5,
       });
 
+    const startDate = dayjs(date).startOf("month").toDate();
+    const endDate = dayjs(date).endOf("month").toDate();
+
+    const calendarData = await CalendarModel.findAll({
+      where: {
+        user_id,
+        start_date: {
+          [Op.between]: [startDate, endDate],
+        },
+      },
+    });
+
     const mappedData = {
       recentBoards: {
         data: boardsData,
@@ -32,6 +47,7 @@ export const getDashboardDataService = async ({
         data: ticketsData,
         count: ticketsCount,
       },
+      calendar: calendarData,
     };
 
     if (mappedData) {
