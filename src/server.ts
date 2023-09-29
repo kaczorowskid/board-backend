@@ -1,8 +1,9 @@
 import dotenv from "dotenv";
-dotenv.config({ path: ".env.development" });
+dotenv.config({ path: ".env" });
 
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import {
   boardRouter,
   calendarRouter,
@@ -16,9 +17,15 @@ const app = express();
 
 const PORT = 4200;
 
+const origin =
+  process.env.ENVIRONMENT === "development"
+    ? process.env.FRONTEND_URL_ORIGIN_DEV
+    : process.env.FRONTEND_URL_ORIGIN_PROD;
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({ origin, credentials: true }));
+app.use(cookieParser());
 
 app.use("/user", userRouter);
 app.use("/table", tableRouter);
