@@ -1,6 +1,11 @@
 import { sequelizeInstance } from "../../../../database";
 import { sequelizeWithError } from "../../../../database/sequelizeWithError";
-import { BoardModel, ColumnModel, TicketModel } from "../../../../models";
+import {
+  BoardModel,
+  ColumnModel,
+  CommentModel,
+  TicketModel,
+} from "../../../../models";
 import { somethingWentWrong } from "../../../helpers";
 import { boardDoesNotExist, getBoardData } from "./getBoard.helper";
 import { GetBoardParams } from "./getBoard.types";
@@ -15,6 +20,11 @@ export const getBoardService = async ({ id }: GetBoardParams) => {
           include: [
             {
               model: TicketModel,
+              include: [
+                {
+                  model: CommentModel,
+                },
+              ],
             },
           ],
         },
