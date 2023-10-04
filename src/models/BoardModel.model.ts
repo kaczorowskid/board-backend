@@ -14,6 +14,7 @@ export class BoardModel extends Model<
   declare title: string;
   declare description: string;
   declare user_id: string;
+  declare owner_id: string;
   declare readonly created_at: CreationOptional<Date>;
   declare readonly updated_at: CreationOptional<Date>;
 }
@@ -28,6 +29,7 @@ BoardModel.init(
     title: Sequelize.STRING,
     description: Sequelize.STRING,
     user_id: Sequelize.UUID,
+    owner_id: Sequelize.UUID,
     created_at: Sequelize.DATE,
     updated_at: Sequelize.DATE,
   },

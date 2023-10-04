@@ -18,6 +18,7 @@ export const createBoardService = async ({
       title,
       description,
       user_id,
+      owner_id: user_id,
     });
 
     await SharedBoardModel.create({
