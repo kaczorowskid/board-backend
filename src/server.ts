@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import {
   boardRouter,
   calendarRouter,
+  commentRouter,
   dashboardRouter,
   folderRouter,
   tableRouter,
@@ -33,5 +34,6 @@ app.use("/folder", folderRouter);
 app.use("/board", boardRouter);
 app.use("/dashboard", dashboardRouter);
 app.use("/calendar", calendarRouter);
+app.use("/comment", commentRouter);
 
 app.listen(PORT, () => console.log(`App listen on port ${PORT}`));

@@ -1,7 +1,9 @@
 import { Router } from "express";
 import {
+  confirmShareBoardToken,
   createBoard,
   createColumn,
+  createShareBoardToken,
   createTicket,
   editBoard,
   editColumn,
@@ -32,3 +34,5 @@ boardRouter.get("/ticket/:id", getTicket);
 boardRouter.post("/ticket", createTicket);
 boardRouter.patch("/ticket/:id", editTicket);
 boardRouter.delete("/ticket/:id", removeTicket);
+boardRouter.post("/share/create", createShareBoardToken);
+boardRouter.post("/share/confirm", confirmShareBoardToken);

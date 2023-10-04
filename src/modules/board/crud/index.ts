@@ -12,3 +12,5 @@ export * from "./removeTicket";
 export * from "./getColumn";
 export * from "./getTicket";
 export * from "./editColumn";
+export * from "./createShareBoardToken";
+export * from "./confirmShareBoardToken";
