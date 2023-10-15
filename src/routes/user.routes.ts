@@ -8,6 +8,7 @@ import {
   setNewPassword,
   updateUser,
   authorization,
+  logout,
 } from "../modules";
 
 export const userRouter = Router();
@@ -20,3 +21,4 @@ userRouter.post("/reset-password", resetPassword);
 userRouter.post("/set-new-password", setNewPassword);
 userRouter.patch("/update/:id", updateUser);
 userRouter.get("/authorization", authorization);
+userRouter.get("/logout", logout);
