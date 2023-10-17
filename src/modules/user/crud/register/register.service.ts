@@ -11,7 +11,8 @@ import { somethingWentWrong } from "../../../helpers";
 export const registerUserService = async ({
   email,
   password,
-  name,
+  first_name,
+  last_name,
 }: Register) => {
   const [data, error] = await sequelizeWithError(async () => {
     const isUserExist = await UserModel.count({ where: { email } });
@@ -22,7 +23,8 @@ export const registerUserService = async ({
         id: uuidv4(),
         email,
         password: passwordHash,
-        name,
+        first_name,
+        last_name,
         is_active: false,
       });
 

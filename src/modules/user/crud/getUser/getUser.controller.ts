@@ -1,11 +1,10 @@
 import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
 import { getUserService } from "./getUser.service";
+import { GetUser } from "./getUser.types";
 
-export const getUser: ExpressMiddleware = async (req, res) => {
-  const data = await getUserService({
-    id: req.header("user-token") as string,
-  });
+export const getUser: ExpressMiddleware<GetUser> = async (req, res) => {
+  const data = await getUserService(req.params);
 
   if (data) {
     if (data.statusCode !== Number(HTTPStatus.OK)) {

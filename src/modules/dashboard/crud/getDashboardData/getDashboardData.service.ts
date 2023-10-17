@@ -1,6 +1,11 @@
 import { Op } from "sequelize";
 import { sequelizeWithError } from "../../../../database";
-import { BoardModel, CalendarModel, TicketModel } from "../../../../models";
+import {
+  BoardModel,
+  CalendarModel,
+  CommentModel,
+  TicketModel,
+} from "../../../../models";
 import { somethingWentWrong } from "../../../helpers";
 import {
   dashboardDoesNotExistInTheDatabase,
@@ -18,12 +23,19 @@ export const getDashboardDataService = async ({
       await BoardModel.findAndCountAll({
         where: { user_id },
         limit: 5,
+        order: [["updated_at", "DESC"]],
       });
 
     const { count: ticketsCount, rows: ticketsData } =
       await TicketModel.findAndCountAll({
         where: { user_id },
         limit: 5,
+        order: [["updated_at", "DESC"]],
+        include: [
+          {
+            model: CommentModel,
+          },
+        ],
       });
 
     const startDate = dayjs(date).startOf("month").toDate();

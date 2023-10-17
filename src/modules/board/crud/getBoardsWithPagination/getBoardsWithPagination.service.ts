@@ -32,6 +32,7 @@ export const getBoardsWithPaginationService = async ({
 
     const { count, rows: data } = await BoardModel.findAndCountAll({
       ...paginationHelper({ offset, limit, searchValue }, { id: boardsIds }),
+      order: [["updated_at", "DESC"]],
     });
 
     if (data) {
