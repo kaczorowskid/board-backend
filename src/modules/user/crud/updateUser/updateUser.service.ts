@@ -6,13 +6,14 @@ import { somethingWentWrong } from "../../../helpers";
 
 export const updateUserService = async ({
   id,
-  name,
+  first_name,
+  last_name,
 }: UpdateParams & Update) => {
   const [data, error] = await sequelizeWithError(async () => {
     const user = await UserModel.findOne({ where: { id } });
 
     if (user) {
-      await UserModel.update({ name }, { where: { id } });
+      await UserModel.update({ first_name, last_name }, { where: { id } });
 
       return hasBeenUpdated();
     } else {

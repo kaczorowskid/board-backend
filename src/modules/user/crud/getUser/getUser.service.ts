@@ -8,7 +8,7 @@ export const getUserService = async ({ id }: GetUser) => {
   const [data, error] = await sequelizeWithError(async () => {
     const userData = await UserModel.findOne({
       where: { id },
-      attributes: ["id", "email", "is_active", "name"],
+      attributes: ["id", "email", "is_active", "first_name", "last_name"],
     });
 
     if (userData) {
