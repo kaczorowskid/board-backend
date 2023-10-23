@@ -1,16 +1,16 @@
 import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
+import { dbErrorFormatter } from "../../../helpers";
 import { getUserService } from "./getUser.service";
 import { GetUser } from "./getUser.types";
 
 export const getUser: ExpressMiddleware<GetUser> = async (req, res) => {
-  const data = await getUserService(req.params);
+  try {
+    const { get } = await getUserService(req.params);
 
-  if (data) {
-    if (data.statusCode !== Number(HTTPStatus.OK)) {
-      res.status(data.statusCode).json({ result: data.data });
-    } else {
-      res.status(data.statusCode).json(data.data);
-    }
+    const result = await get();
+    res.status(HTTPStatus.OK).send(result || []);
+  } catch (error) {
+    res.status(HTTPStatus.CONFLICT).json({ result: dbErrorFormatter(error) });
   }
 };

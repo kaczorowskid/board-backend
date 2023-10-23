@@ -1,47 +1,66 @@
 import { Op } from "sequelize";
-import { sequelizeWithError } from "../../../../database";
 import {
   BoardModel,
   CalendarModel,
   CommentModel,
   TicketModel,
 } from "../../../../models";
-import { somethingWentWrong } from "../../../helpers";
-import {
-  dashboardDoesNotExistInTheDatabase,
-  dashboardExist,
-} from "./getDashboardData.helper";
+
 import { GetDashboardDataParam } from "./getDashboardData.types";
 import dayjs from "dayjs";
+
+interface GetDashboardDataService {
+  getBoardRecords: () => Promise<{
+    count: number;
+    rows: BoardModel[];
+  }>;
+  getTicketRecords: () => Promise<{
+    count: number;
+    rows: TicketModel[];
+  }>;
+  getCalendarRecords: () => Promise<CalendarModel[]>;
+}
 
 export const getDashboardDataService = async ({
   user_id,
   date,
-}: GetDashboardDataParam) => {
-  const [data, error] = await sequelizeWithError(async () => {
-    const { count: boardsCount, rows: boardsData } =
-      await BoardModel.findAndCountAll({
-        where: { user_id },
-        limit: 5,
-        order: [["updated_at", "DESC"]],
-      });
+}: GetDashboardDataParam): Promise<GetDashboardDataService> => {
+  const getBoardRecords = async (): Promise<{
+    count: number;
+    rows: BoardModel[];
+  }> => {
+    const { count, rows } = await BoardModel.findAndCountAll({
+      where: { user_id },
+      limit: 5,
+      order: [["created_at", "DESC"]],
+    });
 
-    const { count: ticketsCount, rows: ticketsData } =
-      await TicketModel.findAndCountAll({
-        where: { user_id },
-        limit: 5,
-        order: [["updated_at", "DESC"]],
-        include: [
-          {
-            model: CommentModel,
-          },
-        ],
-      });
+    return { count, rows };
+  };
 
+  const getTicketRecords = async (): Promise<{
+    count: number;
+    rows: TicketModel[];
+  }> => {
+    const { count, rows } = await TicketModel.findAndCountAll({
+      where: { user_id },
+      limit: 5,
+      order: [["created_at", "DESC"]],
+      include: [
+        {
+          model: CommentModel,
+        },
+      ],
+    });
+
+    return { count, rows };
+  };
+
+  const getCalendarRecords = async (): Promise<CalendarModel[]> => {
     const startDate = dayjs(date).startOf("month").toDate();
     const endDate = dayjs(date).endOf("month").toDate();
 
-    const calendarData = await CalendarModel.findAll({
+    const data = await CalendarModel.findAll({
       where: {
         user_id,
         start_date: {
@@ -50,28 +69,12 @@ export const getDashboardDataService = async ({
       },
     });
 
-    const mappedData = {
-      recentBoards: {
-        data: boardsData,
-        count: boardsCount,
-      },
-      recentTickets: {
-        data: ticketsData,
-        count: ticketsCount,
-      },
-      calendar: calendarData,
-    };
+    return data;
+  };
 
-    if (mappedData) {
-      return dashboardExist(mappedData);
-    } else {
-      return dashboardDoesNotExistInTheDatabase();
-    }
-  });
-
-  if (error) {
-    return somethingWentWrong({ error });
-  }
-
-  return data;
+  return {
+    getBoardRecords,
+    getTicketRecords,
+    getCalendarRecords,
+  };
 };

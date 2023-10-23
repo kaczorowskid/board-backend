@@ -1,36 +1,21 @@
 import { sequelizeInstance } from "../../../../database";
-import { sequelizeWithError } from "../../../../database/sequelizeWithError";
-import { BoardModel } from "../../../../models";
-import { somethingWentWrong } from "../../../helpers";
-import {
-  boardDoesNotExist,
-  updateBoardSuccessfully,
-} from "./updateBoard.helper";
-import {
-  updateBoard,
-  updateColumn,
-  updateTicket,
-} from "./updateBoard.repository";
-import {
-  UpdateBoardBody,
-  UpdateBoardQuery,
-  UpdateColumns,
-  UpdateTickets,
-} from "./updateBoard.types";
+import { updateBoard, updateColumn, updateTicket } from "./updateBoard.helper";
+import { UpdateBoardBody, UpdateBoardQuery } from "./updateBoard.types";
+
+interface UpdateBoardService {
+  update: () => Promise<boolean>;
+}
 
 export const updateBoardService = async ({
   id: boardId,
   title,
   columns,
-}: UpdateBoardQuery & UpdateBoardBody) => {
-  const [data, error] = await sequelizeWithError(async () => {
-    const board = await BoardModel.findOne({ where: { id: boardId } });
+}: UpdateBoardQuery & UpdateBoardBody): Promise<UpdateBoardService> => {
+  const update = async (): Promise<boolean> => {
+    let success = false;
+    const transaction = await sequelizeInstance.transaction();
 
-    console.log("columns ", columns);
-
-    if (board) {
-      const transaction = await sequelizeInstance.transaction();
-
+    try {
       await updateBoard(boardId, title, transaction);
 
       await Promise.all(
@@ -49,29 +34,16 @@ export const updateBoardService = async ({
 
       await transaction.commit();
 
-      return updateBoardSuccessfully();
-    } else {
-      return boardDoesNotExist();
+      success = true;
+    } catch (error) {
+      success = false;
+      console.log("error ", error);
     }
-  });
 
-  if (error) {
-    return somethingWentWrong({ error });
-  }
+    return success;
+  };
 
-  return data;
+  return {
+    update,
+  };
 };
-
-// const board = await BoardModel.findOne({ where: { id: boardId } });
-
-// if (board) {
-//   const transaction = await sequelizeInstance.transaction();
-
-//   await updateBoard(boardId, title, transaction);
-
-//   // Przy użyciu map do edycji danych w ColumnModel
-//   await Promise.all(
-//     columns.map((columnData: any) => updateColumn(columnData, transaction))
-//   );
-
-//   await transaction.commit(); // Zatwierdź transakcję

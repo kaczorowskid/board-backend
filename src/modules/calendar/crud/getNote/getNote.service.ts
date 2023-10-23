@@ -1,25 +1,20 @@
-import { sequelizeWithError } from "../../../../database/sequelizeWithError";
 import { CalendarModel } from "../../../../models";
-import { somethingWentWrong } from "../../../helpers";
-import { getNoteData, noteDoesNotExist } from "./getNote.helper";
 import { GetNoteParams } from "./getNote.types";
 
-export const getNoteService = async ({ id }: GetNoteParams) => {
-  const [data, error] = await sequelizeWithError(async () => {
-    const noteData = await CalendarModel.findOne({
+interface GetNoteService {
+  getNote: () => Promise<CalendarModel | null>;
+}
+
+export const getNoteService = async ({
+  id,
+}: GetNoteParams): Promise<GetNoteService> => {
+  const getNote = async (): Promise<CalendarModel | null> => {
+    const data = await CalendarModel.findOne({
       where: { id },
     });
 
-    if (noteData) {
-      return getNoteData(noteData);
-    } else {
-      return noteDoesNotExist();
-    }
-  });
+    return data;
+  };
 
-  if (error) {
-    return somethingWentWrong({ error });
-  }
-
-  return data;
+  return { getNote };
 };

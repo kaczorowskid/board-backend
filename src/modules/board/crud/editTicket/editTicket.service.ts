@@ -1,8 +1,9 @@
-import { sequelizeWithError } from "../../../../database";
-import { somethingWentWrong } from "../../../helpers";
 import { TicketModel } from "../../../../models";
 import { EditTicket, EditTicketParams } from "./editTicket.types";
-import { ticketHasBeenEdited } from "./editTicket.helper";
+
+interface EditTicketService {
+  edit: () => Promise<boolean>;
+}
 
 export const editTicketService = async ({
   id,
@@ -12,9 +13,9 @@ export const editTicketService = async ({
   start,
   end,
   order,
-}: EditTicket & EditTicketParams) => {
-  const [data, error] = await sequelizeWithError(async () => {
-    TicketModel.update(
+}: EditTicket & EditTicketParams): Promise<EditTicketService> => {
+  const edit = async (): Promise<boolean> => {
+    const [affectedCount] = await TicketModel.update(
       {
         title,
         description,
@@ -28,12 +29,10 @@ export const editTicketService = async ({
       }
     );
 
-    return ticketHasBeenEdited();
-  });
+    return !!affectedCount;
+  };
 
-  if (error) {
-    return somethingWentWrong({ error });
-  }
-
-  return data;
+  return {
+    edit,
+  };
 };

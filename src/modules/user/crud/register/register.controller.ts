@@ -1,5 +1,6 @@
 import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
+import { dbErrorFormatter } from "../../../helpers";
 import { registerUserService } from "./register.service";
 import { Register } from "./register.type";
 
@@ -7,13 +8,12 @@ export const register: ExpressMiddleware<unknown, Register> = async (
   req,
   res
 ) => {
-  const data = await registerUserService(req.body);
+  try {
+    const { register } = await registerUserService(req.body);
 
-  if (data) {
-    if (data.statusCode !== Number(HTTPStatus.OK)) {
-      res.status(data.statusCode).json({ result: data.data });
-    } else {
-      res.status(data.statusCode).json(data.data);
-    }
+    const result = await register();
+    res.status(HTTPStatus.OK).send(result || []);
+  } catch (error) {
+    res.status(HTTPStatus.CONFLICT).json({ result: dbErrorFormatter(error) });
   }
 };

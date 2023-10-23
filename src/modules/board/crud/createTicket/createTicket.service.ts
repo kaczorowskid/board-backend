@@ -1,9 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
-import { sequelizeWithError } from "../../../../database";
-import { somethingWentWrong } from "../../../helpers";
 import { TicketModel } from "../../../../models";
 import { CreateTicket } from "./createTicket.types";
-import { ticketHasBeenCreated } from "./createTicket.helper";
+
+interface CreateTicketService {
+  create: () => Promise<TicketModel>;
+}
 
 export const createTicketService = async ({
   title,
@@ -14,9 +15,9 @@ export const createTicketService = async ({
   order,
   column_id,
   user_id,
-}: CreateTicket) => {
-  const [data, error] = await sequelizeWithError(async () => {
-    const ticket = await TicketModel.create({
+}: CreateTicket): Promise<CreateTicketService> => {
+  const create = async (): Promise<TicketModel> => {
+    const data = await TicketModel.create({
       id: uuidv4(),
       title,
       description,
@@ -28,12 +29,10 @@ export const createTicketService = async ({
       user_id,
     });
 
-    return ticketHasBeenCreated(ticket);
-  });
+    return data;
+  };
 
-  if (error) {
-    return somethingWentWrong({ error });
-  }
-
-  return data;
+  return {
+    create,
+  };
 };

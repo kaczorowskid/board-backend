@@ -1,5 +1,7 @@
 import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
+import { dbErrorFormatter } from "../../../helpers";
+import { CreateCommentResult } from "./createComment.enum";
 import { createCommentService } from "./createComment.service";
 import { CreateComment } from "./createComment.type";
 
@@ -7,13 +9,23 @@ export const createComment: ExpressMiddleware<unknown, CreateComment> = async (
   req,
   res
 ) => {
-  const data = await createCommentService(req.body);
+  try {
+    const { checkIfTicketExist, createComment } = await createCommentService(
+      req.body
+    );
 
-  if (data) {
-    if (data.statusCode !== Number(HTTPStatus.OK)) {
-      res.status(data.statusCode).json(data.data);
-    } else {
-      res.status(data.statusCode).json(data.data);
+    const isExists = await checkIfTicketExist();
+
+    if (!isExists) {
+      res.status(HTTPStatus.CONFLICT).json({
+        result: CreateCommentResult.TICKET_DOESNT_EXIST_IN_THE_DATABASE,
+      });
     }
+
+    const result = await createComment();
+
+    res.status(HTTPStatus.CREATED).send(result);
+  } catch (error) {
+    res.status(HTTPStatus.CONFLICT).json({ result: dbErrorFormatter(error) });
   }
 };

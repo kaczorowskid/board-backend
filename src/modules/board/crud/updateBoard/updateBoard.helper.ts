@@ -1,14 +1,42 @@
-import { HTTPStatus } from "../../../../utils";
-import { DataResponse } from "../../../helpers";
-import { Board } from "../../types";
-import { UpdateBoardEnum } from "./updateBoard.enum";
+import { Transaction } from "sequelize";
+import { BoardModel, ColumnModel, TicketModel } from "../../../../models";
 
-export const updateBoardSuccessfully = (): DataResponse<string> => ({
-  statusCode: Number(HTTPStatus.OK),
-  data: UpdateBoardEnum.BOARD_UPDATED_SUCCESSFULLY,
-});
+export const updateBoard = async (
+  id: string,
+  title: string,
+  transaction: Transaction
+) => {
+  await BoardModel.update({ title }, { where: { id }, transaction });
+};
 
-export const boardDoesNotExist = (): DataResponse<string> => ({
-  statusCode: Number(HTTPStatus.NOT_FOUND),
-  data: UpdateBoardEnum.BOARD_DOES_NOT_EXIST,
-});
+export const updateColumn = async (
+  columnData: any,
+  transaction: Transaction
+) => {
+  const { id: columnId, title: columnTitle } = columnData;
+  await ColumnModel.update(
+    { title: columnTitle },
+    { where: { id: columnId }, transaction }
+  );
+};
+
+export const updateTicket = async (
+  ticketData: any,
+  transaction: Transaction
+) => {
+  const {
+    id: ticketId,
+    title: ticketTitle,
+    description,
+    start,
+    end,
+    prio,
+    order,
+    column_id,
+  } = ticketData;
+
+  await TicketModel.update(
+    { title: ticketTitle, description, start, end, prio, order, column_id },
+    { where: { id: ticketId }, transaction }
+  );
+};

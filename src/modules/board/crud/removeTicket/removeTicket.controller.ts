@@ -1,5 +1,6 @@
 import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
+import { dbErrorFormatter } from "../../../helpers";
 import { removeTicketService } from "./removeTicket.service";
 import { RemoveTicketParams } from "./removeTicket.types";
 
@@ -7,13 +8,14 @@ export const removeTicket: ExpressMiddleware<RemoveTicketParams> = async (
   req,
   res
 ) => {
-  const data = await removeTicketService(req.params);
+  try {
+    const { remove } = await removeTicketService(req.params);
 
-  if (data) {
-    if (data.statusCode !== Number(HTTPStatus.OK)) {
-      res.status(data.statusCode).json({ result: data.data });
-    } else {
-      res.status(data.statusCode).json(data.data);
-    }
+    const result = await remove();
+    res
+      .status(result ? HTTPStatus.OK : HTTPStatus.CONFLICT)
+      .json({ deleted: result });
+  } catch (error) {
+    res.status(HTTPStatus.CONFLICT).json({ result: dbErrorFormatter(error) });
   }
 };

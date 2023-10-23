@@ -1,19 +1,23 @@
+import { json } from "sequelize";
 import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
+import { dbErrorFormatter } from "../../../helpers";
 import { resetPasswordService } from "./resetPassword.service";
 import { ResetPassword } from "./resetPassword.type";
+import { ResetPasswordEnum } from "./resetPassword.enum";
 
 export const resetPassword: ExpressMiddleware<unknown, ResetPassword> = async (
   req,
   res
 ) => {
-  const data = await resetPasswordService(req.body);
+  try {
+    const { resetPassword } = await resetPasswordService(req.body);
 
-  if (data) {
-    if (data.statusCode !== Number(HTTPStatus.OK)) {
-      res.status(data.statusCode).json({ result: data.data });
-    } else {
-      res.status(data.statusCode).json(data.data);
-    }
+    await resetPassword();
+    res
+      .status(HTTPStatus.OK)
+      .json({ result: ResetPasswordEnum.PASSWORD_HAS_BEEN_RESET });
+  } catch (error) {
+    res.status(HTTPStatus.CONFLICT).json({ result: dbErrorFormatter(error) });
   }
 };

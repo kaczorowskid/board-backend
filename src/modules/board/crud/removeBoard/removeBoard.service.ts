@@ -1,21 +1,22 @@
-import { sequelizeWithError } from "../../../../database";
-import { somethingWentWrong } from "../../../helpers";
 import { BoardModel } from "../../../../models";
 import { RemoveBoardParams } from "./removeBoard.types";
-import { boardHasBeenRemoved } from "./removeBoard.helper";
 
-export const removeBoardService = async ({ id }: RemoveBoardParams) => {
-  const [data, error] = await sequelizeWithError(async () => {
-    const board = BoardModel.destroy({
+interface RemoveBoardService {
+  remove: () => Promise<boolean>;
+}
+
+export const removeBoardService = async ({
+  id,
+}: RemoveBoardParams): Promise<RemoveBoardService> => {
+  const remove = async (): Promise<boolean> => {
+    const data = BoardModel.destroy({
       where: { id },
     });
 
-    return boardHasBeenRemoved();
-  });
+    return !!data;
+  };
 
-  if (error) {
-    return somethingWentWrong({ error });
-  }
-
-  return data;
+  return {
+    remove,
+  };
 };

@@ -1,36 +1,35 @@
 import jwt from "jsonwebtoken";
-import { sequelizeWithError } from "../../../../database";
-import { somethingWentWrong } from "../../../helpers";
 import { BoardModel } from "../../../../models";
 import { CreateShareBoardToken } from "./createShareBoardToken.types";
-import {
-  boardDoesNotExist,
-  tokenHasBeenCreated,
-} from "./createShareBoardToken.helper";
+
+interface CreateShareBoardTokenService {
+  chceckIfBoardExists: () => Promise<boolean>;
+  createToken: () => string;
+}
 
 export const createShareBoardTokenService = async ({
   board_id,
-}: CreateShareBoardToken) => {
-  const [data, error] = await sequelizeWithError(async () => {
-    const boardExist = await BoardModel.findOne({
+}: CreateShareBoardToken): Promise<CreateShareBoardTokenService> => {
+  const chceckIfBoardExists = async (): Promise<boolean> => {
+    const data = await BoardModel.findOne({
       where: {
         id: board_id,
       },
     });
 
-    if (boardExist) {
-      const boardToken = jwt.sign({ board_id }, process.env.SHARE_BOARD_KEY!, {
-        expiresIn: "1d",
-      });
-      return tokenHasBeenCreated(boardToken);
-    } else {
-      return boardDoesNotExist();
-    }
-  });
+    return !!data;
+  };
 
-  if (error) {
-    return somethingWentWrong({ error });
-  }
+  const createToken = (): string => {
+    const token = jwt.sign({ board_id }, process.env.SHARE_BOARD_KEY!, {
+      expiresIn: "1d",
+    });
 
-  return data;
+    return token;
+  };
+
+  return {
+    chceckIfBoardExists,
+    createToken,
+  };
 };

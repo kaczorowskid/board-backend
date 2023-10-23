@@ -1,16 +1,17 @@
-import { sequelizeWithError } from "../../../../database";
-import { somethingWentWrong } from "../../../helpers";
 import { BoardModel } from "../../../../models";
 import { EditBoard, EditBoardParams } from "./editBoard.types";
-import { boardHasBeenEdited } from "./editBoard.helper";
+
+interface EditBoardService {
+  edit: () => Promise<boolean>;
+}
 
 export const editBoardService = async ({
   id,
   title,
   description,
-}: EditBoard & EditBoardParams) => {
-  const [data, error] = await sequelizeWithError(async () => {
-    BoardModel.update(
+}: EditBoard & EditBoardParams): Promise<EditBoardService> => {
+  const edit = async (): Promise<boolean> => {
+    const [affectedCount] = await BoardModel.update(
       {
         title,
         description,
@@ -20,12 +21,10 @@ export const editBoardService = async ({
       }
     );
 
-    return boardHasBeenEdited();
-  });
+    return !!affectedCount;
+  };
 
-  if (error) {
-    return somethingWentWrong({ error });
-  }
-
-  return data;
+  return {
+    edit,
+  };
 };

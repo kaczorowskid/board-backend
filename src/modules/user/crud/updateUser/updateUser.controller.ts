@@ -1,5 +1,6 @@
 import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
+import { dbErrorFormatter } from "../../../helpers";
 import { updateUserService } from "./updateUser.service";
 import { Update, UpdateParams } from "./updateUser.type";
 
@@ -7,16 +8,15 @@ export const updateUser: ExpressMiddleware<UpdateParams, Update> = async (
   req,
   res
 ) => {
-  const data = await updateUserService({
-    ...req.params,
-    ...req.body,
-  });
+  try {
+    const { update } = await updateUserService({
+      ...req.params,
+      ...req.body,
+    });
 
-  if (data) {
-    if (data.statusCode !== Number(HTTPStatus.OK)) {
-      res.status(data.statusCode).json({ result: data.data });
-    } else {
-      res.status(data.statusCode).json(data.data);
-    }
+    const result = await update();
+    res.status(HTTPStatus.OK).send(result || []);
+  } catch (error) {
+    res.status(HTTPStatus.CONFLICT).json({ result: dbErrorFormatter(error) });
   }
 };

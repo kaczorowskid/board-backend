@@ -1,15 +1,16 @@
-import { sequelizeWithError } from "../../../../database";
-import { somethingWentWrong } from "../../../helpers";
 import { ColumnModel } from "../../../../models";
 import { EditColumn, EditColumnParams } from "./editColumn.types";
-import { columnHasBeenEdited } from "./editColumn.helper";
+
+interface EditColumnService {
+  edit: () => Promise<boolean>;
+}
 
 export const editColumnService = async ({
   id,
   title,
-}: EditColumn & EditColumnParams) => {
-  const [data, error] = await sequelizeWithError(async () => {
-    ColumnModel.update(
+}: EditColumn & EditColumnParams): Promise<EditColumnService> => {
+  const edit = async (): Promise<boolean> => {
+    const [affectedCount] = await ColumnModel.update(
       {
         title,
       },
@@ -18,12 +19,10 @@ export const editColumnService = async ({
       }
     );
 
-    return columnHasBeenEdited();
-  });
+    return !!affectedCount;
+  };
 
-  if (error) {
-    return somethingWentWrong({ error });
-  }
-
-  return data;
+  return {
+    edit,
+  };
 };

@@ -1,21 +1,22 @@
 import { v4 as uuidv4 } from "uuid";
-import { sequelizeWithError } from "../../../../database";
-import { somethingWentWrong } from "../../../helpers";
 import { CreateNote } from "./createNote.type";
 import { CalendarModel } from "../../../../models/CalendarModel.model";
-import { noteHasBeenCreated } from "./createNote.helper";
 import dayjs from "dayjs";
+
+interface CreateNoteService {
+  create: () => Promise<CalendarModel>;
+}
 
 export const createNoteService = async ({
   start_date,
   hour,
   note,
   user_id,
-}: CreateNote) => {
-  const [data, error] = await sequelizeWithError(async () => {
+}: CreateNote): Promise<CreateNoteService> => {
+  const create = async (): Promise<CalendarModel> => {
     const startDate = dayjs(start_date).format("YYYY-MM-DD");
 
-    const noteData = await CalendarModel.create({
+    const data = await CalendarModel.create({
       id: uuidv4(),
       start_date: startDate,
       hour,
@@ -23,12 +24,8 @@ export const createNoteService = async ({
       user_id,
     });
 
-    return noteHasBeenCreated(noteData);
-  });
+    return data;
+  };
 
-  if (error) {
-    return somethingWentWrong({ error });
-  }
-
-  return data;
+  return { create };
 };
