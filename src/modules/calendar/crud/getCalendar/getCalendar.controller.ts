@@ -1,5 +1,6 @@
 import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
+import { dbErrorFormatter } from "../../../helpers";
 import { getCalendarService } from "./getCalendar.service";
 import { GetCalendarQuery } from "./getCalendar.types";
 
@@ -8,13 +9,12 @@ export const getCalendar: ExpressMiddleware<
   unknown,
   GetCalendarQuery
 > = async (req, res) => {
-  const data = await getCalendarService(req.query);
+  try {
+    const { getCalendar } = await getCalendarService(req.query);
 
-  if (data) {
-    if (data.statusCode !== Number(HTTPStatus.OK)) {
-      res.status(data.statusCode).json({ result: data.data });
-    } else {
-      res.status(data.statusCode).json(data.data);
-    }
+    const result = await getCalendar();
+    res.status(HTTPStatus.OK).send(result);
+  } catch (error) {
+    res.status(HTTPStatus.CONFLICT).json({ result: dbErrorFormatter(error) });
   }
 };

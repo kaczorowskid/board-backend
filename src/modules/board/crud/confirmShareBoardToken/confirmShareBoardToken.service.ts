@@ -1,46 +1,45 @@
 import jwt from "jsonwebtoken";
-import { sequelizeWithError } from "../../../../database";
-import { somethingWentWrong } from "../../../helpers";
 import { BoardModel, SharedBoardModel } from "../../../../models";
 import { v4 as uuidv4 } from "uuid";
 import { ConfirmShareBoard } from "./confirmShareBoardToken.types";
-import {
-  boardDoesNotExist,
-  boardHasBeenShared,
-} from "./confirmShareBoardToken.helper";
+
+interface ConfirmShareBoardTokenService {
+  boardData: () => Promise<BoardModel | null>;
+  createSharedBoard: (board_id: string) => Promise<SharedBoardModel>;
+}
 
 export const confirmShareBoardTokenService = async ({
   token,
   user_id,
-}: ConfirmShareBoard) => {
-  const [data, error] = await sequelizeWithError(async () => {
+}: ConfirmShareBoard): Promise<ConfirmShareBoardTokenService> => {
+  const boardData = async (): Promise<BoardModel | null> => {
     const { board_id } = jwt.verify(token, process.env.SHARE_BOARD_KEY!) as {
       board_id: string;
     };
 
-    console.log("board_id ", board_id);
-
-    const boardExist = await BoardModel.findOne({
+    const data = await BoardModel.findOne({
       where: {
         id: board_id,
       },
     });
 
-    if (boardExist) {
-      await SharedBoardModel.create({
-        id: uuidv4(),
-        user_id,
-        board_id: board_id,
-      });
-      return boardHasBeenShared();
-    } else {
-      return boardDoesNotExist();
-    }
-  });
+    return data;
+  };
 
-  if (error) {
-    return somethingWentWrong({ error });
-  }
+  const createSharedBoard = async (
+    board_id: string
+  ): Promise<SharedBoardModel> => {
+    const data = await SharedBoardModel.create({
+      id: uuidv4(),
+      user_id,
+      board_id,
+    });
 
-  return data;
+    return data;
+  };
+
+  return {
+    boardData,
+    createSharedBoard,
+  };
 };

@@ -1,34 +1,24 @@
-import { sequelizeWithError } from "../../../../database/sequelizeWithError";
 import { CalendarModel } from "../../../../models";
-import { somethingWentWrong } from "../../../helpers";
 import { GetNotesByDateQuery } from "./getNotesByDate.types";
-import {
-  getNotesByDateData,
-  notesByDateDoNotExist,
-} from "./getNotesByDate.helper";
+
+interface GetNotesByDateService {
+  getNoteByDate: () => Promise<CalendarModel[]>;
+}
 
 export const getNotesByDateService = async ({
   user_id,
   date,
-}: GetNotesByDateQuery) => {
-  const [data, error] = await sequelizeWithError(async () => {
-    const noteData = await CalendarModel.findAll({
+}: GetNotesByDateQuery): Promise<GetNotesByDateService> => {
+  const getNoteByDate = async (): Promise<CalendarModel[]> => {
+    const data = await CalendarModel.findAll({
       where: {
         user_id,
         start_date: date,
       },
     });
 
-    if (noteData) {
-      return getNotesByDateData(noteData);
-    } else {
-      return notesByDateDoNotExist();
-    }
-  });
+    return data;
+  };
 
-  if (error) {
-    return somethingWentWrong({ error });
-  }
-
-  return data;
+  return { getNoteByDate };
 };

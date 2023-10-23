@@ -1,5 +1,7 @@
 import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
+import { dbErrorFormatter } from "../../../helpers";
+import { ConfirmShareBoardTokenResult } from "./confirmShareBoardToken.enum";
 import { confirmShareBoardTokenService } from "./confirmShareBoardToken.service";
 import { ConfirmShareBoard } from "./confirmShareBoardToken.types";
 
@@ -7,13 +9,21 @@ export const confirmShareBoardToken: ExpressMiddleware<
   unknown,
   ConfirmShareBoard
 > = async (req, res) => {
-  const data = await confirmShareBoardTokenService(req.body);
+  try {
+    const { boardData, createSharedBoard } =
+      await confirmShareBoardTokenService(req.body);
 
-  if (data) {
-    if (data.statusCode !== Number(HTTPStatus.OK)) {
-      res.status(data.statusCode).json({ result: data.data });
+    const data = await boardData();
+
+    if (data) {
+      const result = createSharedBoard(data.id);
+      res.status(HTTPStatus.OK).json({ result });
     } else {
-      res.status(data.statusCode).json(data.data);
+      res
+        .status(HTTPStatus.NOT_FOUND)
+        .json({ result: ConfirmShareBoardTokenResult.BOARD_DOES_NOT_EXIST });
     }
+  } catch (error) {
+    res.status(HTTPStatus.CONFLICT).json({ result: dbErrorFormatter(error) });
   }
 };

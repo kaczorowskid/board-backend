@@ -1,27 +1,26 @@
 import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
+import { dbErrorFormatter } from "../../../helpers";
 import { loginUserService } from "./login.service";
 import { Login } from "./login.type";
 
 export const login: ExpressMiddleware<unknown, Login> = async (req, res) => {
-  const data = await loginUserService(req.body);
-  let token;
+  try {
+    const { getUserData, generateAccessToken } = await loginUserService(
+      req.body
+    );
 
-  if (typeof data?.data !== "string") {
-    token = data?.data.token;
-  }
+    const userData = await getUserData();
+    const accessToken = await generateAccessToken(userData);
 
-  if (data) {
-    if (data.statusCode !== Number(HTTPStatus.OK)) {
-      res
-        .status(data.statusCode)
-        .cookie("JWT", token, {
-          maxAge: 84600000,
-          httpOnly: true,
-        })
-        .json(data.data);
-    } else {
-      res.status(data.statusCode).json(data.data);
-    }
+    res
+      .status(HTTPStatus.OK)
+      .cookie("JWT", accessToken, {
+        maxAge: 84600000,
+        httpOnly: true,
+      })
+      .send(userData?.dataValues);
+  } catch (error) {
+    res.status(HTTPStatus.CONFLICT).json({ result: dbErrorFormatter(error) });
   }
 };

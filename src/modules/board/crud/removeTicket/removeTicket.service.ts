@@ -1,26 +1,20 @@
-import { sequelizeWithError } from "../../../../database";
 import { TicketModel } from "../../../../models";
-import { somethingWentWrong } from "../../../helpers";
-import {
-  removedTicketSuccessfully,
-  ticketDoesNotExist,
-} from "./removeTicket.helper";
 import { RemoveTicketParams } from "./removeTicket.types";
 
-export const removeTicketService = async ({ id }: RemoveTicketParams) => {
-  const [data, error] = await sequelizeWithError(async () => {
-    const ticketData = await TicketModel.destroy({ where: { id } });
+interface RemoveTicketService {
+  remove: () => Promise<boolean>;
+}
 
-    if (ticketData) {
-      return removedTicketSuccessfully();
-    } else {
-      return ticketDoesNotExist();
-    }
-  });
+export const removeTicketService = async ({
+  id,
+}: RemoveTicketParams): Promise<RemoveTicketService> => {
+  const remove = async (): Promise<boolean> => {
+    const data = await TicketModel.destroy({ where: { id } });
 
-  if (error) {
-    return somethingWentWrong({ error });
-  }
+    return !!data;
+  };
 
-  return data;
+  return {
+    remove,
+  };
 };

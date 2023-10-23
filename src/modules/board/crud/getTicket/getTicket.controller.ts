@@ -1,5 +1,6 @@
 import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
+import { dbErrorFormatter } from "../../../helpers";
 import { getTicketService } from "./getTicket.service";
 import { GetTicketParams } from "./getTicket.types";
 
@@ -7,13 +8,12 @@ export const getTicket: ExpressMiddleware<GetTicketParams> = async (
   req,
   res
 ) => {
-  const data = await getTicketService(req.params);
+  try {
+    const { get } = await getTicketService(req.params);
 
-  if (data) {
-    if (data.statusCode !== Number(HTTPStatus.OK)) {
-      res.status(data.statusCode).json({ result: data.data });
-    } else {
-      res.status(data.statusCode).json(data.data);
-    }
+    const result = await get();
+    res.status(HTTPStatus.OK).send(result || []);
+  } catch (error) {
+    res.status(HTTPStatus.CONFLICT).json({ result: dbErrorFormatter(error) });
   }
 };

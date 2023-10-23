@@ -9,8 +9,6 @@ import {
   calendarRouter,
   commentRouter,
   dashboardRouter,
-  folderRouter,
-  tableRouter,
   userRouter,
 } from "./routes";
 
@@ -29,8 +27,6 @@ app.use(cors({ origin, credentials: true }));
 app.use(cookieParser());
 
 app.use("/user", userRouter);
-app.use("/table", tableRouter);
-app.use("/folder", folderRouter);
 app.use("/board", boardRouter);
 app.use("/dashboard", dashboardRouter);
 app.use("/calendar", calendarRouter);

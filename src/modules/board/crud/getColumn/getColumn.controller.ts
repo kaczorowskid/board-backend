@@ -1,5 +1,6 @@
 import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
+import { dbErrorFormatter } from "../../../helpers";
 import { getColumnService } from "./getColumn.service";
 import { GetColumnParams } from "./getColumn.types";
 
@@ -7,13 +8,12 @@ export const getColumn: ExpressMiddleware<GetColumnParams> = async (
   req,
   res
 ) => {
-  const data = await getColumnService(req.params);
+  try {
+    const { get } = await getColumnService(req.params);
 
-  if (data) {
-    if (data.statusCode !== Number(HTTPStatus.OK)) {
-      res.status(data.statusCode).json({ result: data.data });
-    } else {
-      res.status(data.statusCode).json(data.data);
-    }
+    const result = await get();
+    res.status(HTTPStatus.OK).send(result || []);
+  } catch (error) {
+    res.status(HTTPStatus.CONFLICT).json({ result: dbErrorFormatter(error) });
   }
 };

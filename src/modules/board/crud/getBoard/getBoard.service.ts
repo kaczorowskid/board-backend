@@ -1,18 +1,18 @@
-import { sequelizeInstance } from "../../../../database";
-import { sequelizeWithError } from "../../../../database/sequelizeWithError";
 import {
   BoardModel,
   ColumnModel,
   CommentModel,
   TicketModel,
 } from "../../../../models";
-import { somethingWentWrong } from "../../../helpers";
-import { boardDoesNotExist, getBoardData } from "./getBoard.helper";
 import { GetBoardParams } from "./getBoard.types";
 
+interface GetBoardService {
+  get: () => Promise<BoardModel | null>;
+}
+
 export const getBoardService = async ({ id }: GetBoardParams) => {
-  const [data, error] = await sequelizeWithError(async () => {
-    const boardData = await BoardModel.findOne({
+  const get = async (): Promise<BoardModel | null> => {
+    const data = await BoardModel.findOne({
       where: { id },
       include: [
         {
@@ -35,16 +35,10 @@ export const getBoardService = async ({ id }: GetBoardParams) => {
       ],
     });
 
-    if (boardData) {
-      return getBoardData(boardData);
-    } else {
-      return boardDoesNotExist();
-    }
-  });
+    return data;
+  };
 
-  if (error) {
-    return somethingWentWrong({ error });
-  }
-
-  return data;
+  return {
+    get,
+  };
 };

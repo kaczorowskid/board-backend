@@ -1,18 +1,34 @@
 import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
+import { dbErrorFormatter } from "../../../helpers";
 import { getDashboardDataService } from "./getDashboardData.service";
 import { GetDashboardDataParam } from "./getDashboardData.types";
 
 export const getDashboardData: ExpressMiddleware<
   GetDashboardDataParam
 > = async (req, res) => {
-  const data = await getDashboardDataService(req.params);
+  try {
+    const { getBoardRecords, getTicketRecords, getCalendarRecords } =
+      await getDashboardDataService(req.params);
 
-  if (data) {
-    if (data.statusCode !== Number(HTTPStatus.OK)) {
-      res.status(data.statusCode).json({ result: data.data });
-    } else {
-      res.status(data.statusCode).json(data.data);
-    }
+    const boardRecords = await getBoardRecords();
+    const ticketRecords = await getTicketRecords();
+    const calendarRecords = await getCalendarRecords();
+
+    const mappedData = {
+      recentBoards: {
+        data: boardRecords.rows,
+        count: boardRecords.count,
+      },
+      recentTickets: {
+        data: ticketRecords.rows,
+        count: ticketRecords.count,
+      },
+      calendar: calendarRecords,
+    };
+
+    res.status(HTTPStatus.OK).send(mappedData);
+  } catch (error) {
+    res.status(HTTPStatus.CONFLICT).json({ result: dbErrorFormatter(error) });
   }
 };

@@ -1,26 +1,19 @@
-import { sequelizeWithError } from "../../../../database";
-import { CalendarModel, CommentModel } from "../../../../models";
-import { somethingWentWrong } from "../../../helpers";
-import {
-  commentDoesNotExist,
-  removedCommentSuccessfully,
-} from "./removeComment.helper";
+import { CommentModel } from "../../../../models";
 import { RemoveCommentParams } from "./removeComment.types";
 
-export const removeCommentService = async ({ id }: RemoveCommentParams) => {
-  const [data, error] = await sequelizeWithError(async () => {
-    const ticketData = await CommentModel.destroy({ where: { id } });
+interface RemoveCommentService {
+  remove: () => Promise<boolean>;
+}
 
-    if (ticketData) {
-      return removedCommentSuccessfully();
-    } else {
-      return commentDoesNotExist();
-    }
-  });
+export const removeCommentService = async ({
+  id,
+}: RemoveCommentParams): Promise<RemoveCommentService> => {
+  const remove = async (): Promise<boolean> => {
+    const data = await CommentModel.destroy({ where: { id } });
+    return !!data;
+  };
 
-  if (error) {
-    return somethingWentWrong({ error });
-  }
-
-  return data;
+  return {
+    remove,
+  };
 };

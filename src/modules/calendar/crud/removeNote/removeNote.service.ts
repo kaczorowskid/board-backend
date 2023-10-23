@@ -1,23 +1,17 @@
-import { sequelizeWithError } from "../../../../database";
 import { CalendarModel } from "../../../../models";
-import { somethingWentWrong } from "../../../helpers";
-import { noteDoesNotExist, removedNoteSuccessfully } from "./removeNote.helper";
 import { RemoveNoteParams } from "./removeNote.types";
 
-export const removeNoteService = async ({ id }: RemoveNoteParams) => {
-  const [data, error] = await sequelizeWithError(async () => {
-    const ticketData = await CalendarModel.destroy({ where: { id } });
+interface RemoveNoteService {
+  removeNote: () => Promise<boolean>;
+}
 
-    if (ticketData) {
-      return removedNoteSuccessfully();
-    } else {
-      return noteDoesNotExist();
-    }
-  });
+export const removeNoteService = async ({
+  id,
+}: RemoveNoteParams): Promise<RemoveNoteService> => {
+  const removeNote = async () => {
+    const data = await CalendarModel.destroy({ where: { id } });
+    return !!data;
+  };
 
-  if (error) {
-    return somethingWentWrong({ error });
-  }
-
-  return data;
+  return { removeNote };
 };

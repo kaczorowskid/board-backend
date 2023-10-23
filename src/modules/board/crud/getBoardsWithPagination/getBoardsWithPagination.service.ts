@@ -1,19 +1,24 @@
-import { sequelizeWithError } from "../../../../database";
 import { BoardModel, UserModel } from "../../../../models";
-import { paginationHelper, somethingWentWrong } from "../../../helpers";
+import { paginationHelper } from "../../../helpers";
 import { GetBoardsWithPaginationQuery } from "./getBoardsWithPagination.type";
-import {
-  boardsDoesNotExistInTheDatabase,
-  boardsExist,
-} from "./getBoardsWithPagination.helper";
+
+interface GetBoardsWithPaginationService {
+  get: () => Promise<{
+    count: number;
+    rows: BoardModel[];
+  }>;
+}
 
 export const getBoardsWithPaginationService = async ({
   offset,
   limit,
   search_value: searchValue,
   user_id,
-}: GetBoardsWithPaginationQuery) => {
-  const [data, error] = await sequelizeWithError(async () => {
+}: GetBoardsWithPaginationQuery): Promise<GetBoardsWithPaginationService> => {
+  const get = async (): Promise<{
+    count: number;
+    rows: BoardModel[];
+  }> => {
     const userBoards = await UserModel.findOne({
       where: {
         id: user_id,
@@ -30,24 +35,15 @@ export const getBoardsWithPaginationService = async ({
       (board: any) => board.sharedBoards.board_id
     );
 
-    const { count, rows: data } = await BoardModel.findAndCountAll({
+    const { count, rows } = await BoardModel.findAndCountAll({
       ...paginationHelper({ offset, limit, searchValue }, { id: boardsIds }),
       order: [["updated_at", "DESC"]],
     });
 
-    if (data) {
-      return boardsExist({
-        count,
-        data,
-      });
-    } else {
-      return boardsDoesNotExistInTheDatabase();
-    }
-  });
+    return { count, rows };
+  };
 
-  if (error) {
-    return somethingWentWrong({ error });
-  }
-
-  return data;
+  return {
+    get,
+  };
 };

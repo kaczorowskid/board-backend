@@ -1,5 +1,6 @@
 import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
+import { dbErrorFormatter } from "../../../helpers";
 import { getBoardsWithPaginationService } from "./getBoardsWithPagination.service";
 import { GetBoardsWithPaginationQuery } from "./getBoardsWithPagination.type";
 
@@ -10,18 +11,17 @@ export const getBoardsWithPagination: ExpressMiddleware<
 > = async (req, res) => {
   const { user_id, limit, offset, search_value: searchValue } = req.query;
 
-  const data = await getBoardsWithPaginationService({
-    user_id,
-    limit: Number(limit),
-    offset: Number(offset),
-    search_value: searchValue,
-  });
+  try {
+    const { get } = await getBoardsWithPaginationService({
+      user_id,
+      limit: Number(limit),
+      offset: Number(offset),
+      search_value: searchValue,
+    });
 
-  if (data) {
-    if (data.statusCode !== Number(HTTPStatus.OK)) {
-      res.status(data.statusCode).json({ result: data.data });
-    } else {
-      res.status(data.statusCode).json(data.data);
-    }
+    const result = await get();
+    res.status(HTTPStatus.OK).send(result || []);
+  } catch (error) {
+    res.status(HTTPStatus.CONFLICT).json({ result: dbErrorFormatter(error) });
   }
 };

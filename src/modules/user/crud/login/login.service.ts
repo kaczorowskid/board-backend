@@ -1,34 +1,40 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { sequelizeWithError } from "../../../../database";
 import { UserModel } from "../../../../models";
-import { userDoesNotExist, isLogged, wrongPass } from "./login.helper";
 import { Login } from "./login.type";
-import { somethingWentWrong } from "../../../helpers";
 
-export const loginUserService = async ({ email, password }: Login) => {
-  const [data, error] = await sequelizeWithError(async () => {
-    const userData = await UserModel.findOne({
+interface LoginUserService {
+  getUserData: () => Promise<UserModel | null>;
+  generateAccessToken: (userData: UserModel | null) => Promise<string>;
+}
+
+export const loginUserService = async ({
+  email,
+  password,
+}: Login): Promise<LoginUserService> => {
+  const getUserData = async (): Promise<UserModel | null> => {
+    const data = await UserModel.findOne({
       where: { email },
     });
-    if (userData) {
-      const passwordHash = await bcrypt.compare(password, userData.password);
-      const accessToken = jwt.sign(
-        { id: userData.id },
-        process.env.EMAIL_KEY!,
-        { expiresIn: "2h" }
-      );
-      return passwordHash
-        ? isLogged({ ...userData.dataValues, token: accessToken })
-        : wrongPass();
-    } else {
-      return userDoesNotExist();
-    }
-  });
 
-  if (error) {
-    return somethingWentWrong({ error });
-  }
+    const isCorrectPassword = await bcrypt.compare(
+      password,
+      (data as UserModel).password
+    );
 
-  return data;
+    return isCorrectPassword ? data : null;
+  };
+
+  const generateAccessToken = async (userData: UserModel | null) => {
+    const accessToken = jwt.sign({ id: userData?.id }, process.env.EMAIL_KEY!, {
+      expiresIn: "2h",
+    });
+
+    return accessToken;
+  };
+
+  return {
+    getUserData,
+    generateAccessToken,
+  };
 };
