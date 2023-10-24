@@ -1,5 +1,5 @@
 import { CalendarModel } from "../../../../models";
-import { RemoveNoteParams } from "./removeNote.types";
+import { RemoveNoteRequest } from "../../../../contracts/calendar";
 
 interface RemoveNoteService {
   removeNote: () => Promise<boolean>;
@@ -7,7 +7,7 @@ interface RemoveNoteService {
 
 export const removeNoteService = async ({
   id,
-}: RemoveNoteParams): Promise<RemoveNoteService> => {
+}: RemoveNoteRequest): Promise<RemoveNoteService> => {
   const removeNote = async () => {
     const data = await CalendarModel.destroy({ where: { id } });
     return !!data;

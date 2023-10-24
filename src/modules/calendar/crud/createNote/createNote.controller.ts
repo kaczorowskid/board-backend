@@ -2,9 +2,9 @@ import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { createNoteService } from "./createNote.service";
-import { CreateNote } from "./createNote.type";
+import { CreateNoteRequest } from "../../../../contracts/calendar";
 
-export const createNote: ExpressMiddleware<unknown, CreateNote> = async (
+export const createNote: ExpressMiddleware<unknown, CreateNoteRequest> = async (
   req,
   res
 ) => {

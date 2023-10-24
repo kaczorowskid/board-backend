@@ -1,6 +1,6 @@
 import { Op } from "sequelize";
 import { CalendarModel } from "../../../../models";
-import { GetCalendarQuery } from "./getCalendar.types";
+import { GetCalendarRequest } from "../../../../contracts/calendar";
 import dayjs from "dayjs";
 
 interface GetCalendarService {
@@ -10,7 +10,7 @@ interface GetCalendarService {
 export const getCalendarService = async ({
   user_id,
   date,
-}: GetCalendarQuery): Promise<GetCalendarService> => {
+}: GetCalendarRequest): Promise<GetCalendarService> => {
   const getCalendar = async (): Promise<CalendarModel[]> => {
     const startDate = dayjs(date).startOf("month").toDate();
     const endDate = dayjs(date).endOf("month").toDate();

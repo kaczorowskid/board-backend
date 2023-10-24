@@ -1,5 +1,5 @@
 import { BoardModel } from "../../../../models";
-import { RemoveBoardParams } from "./removeBoard.types";
+import { RemoveBoardRequest } from "../../../../contracts/board/board.type";
 
 interface RemoveBoardService {
   remove: () => Promise<boolean>;
@@ -7,7 +7,7 @@ interface RemoveBoardService {
 
 export const removeBoardService = async ({
   id,
-}: RemoveBoardParams): Promise<RemoveBoardService> => {
+}: RemoveBoardRequest): Promise<RemoveBoardService> => {
   const remove = async (): Promise<boolean> => {
     const data = BoardModel.destroy({
       where: { id },

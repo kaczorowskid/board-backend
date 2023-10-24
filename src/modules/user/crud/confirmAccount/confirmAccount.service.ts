@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { UserModel } from "../../../../models";
 import { User } from "../../types";
-import { ConfirmAccount } from "./confirmAccount.type";
+import { ConfirmAccountUserRequest } from "../../../../contracts/user/user.type";
 
 interface ConfirmAccountService {
   confirm: () => Promise<boolean>;
@@ -9,9 +9,9 @@ interface ConfirmAccountService {
 
 export const confirmAccountService = async ({
   token,
-}: ConfirmAccount): Promise<ConfirmAccountService> => {
+}: ConfirmAccountUserRequest): Promise<ConfirmAccountService> => {
   const confirm = async (): Promise<boolean> => {
-    const userId = jwt.verify(token, process.env.EMAIL_KEY!) as User;
+    const userId = jwt.verify(token as string, process.env.EMAIL_KEY!) as User;
 
     const [affectedCount] = await UserModel.update(
       { is_active: true },

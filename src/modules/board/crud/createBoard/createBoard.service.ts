@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { CreateBoard } from "./createBoard.types";
+import { CreateBoardRequest } from "../../../../contracts/board/board.type";
 import { BoardModel, SharedBoardModel } from "../../../../models";
 
 interface CreateBoardService {
@@ -11,7 +11,7 @@ export const createBoardService = async ({
   title,
   description,
   user_id,
-}: CreateBoard) => {
+}: CreateBoardRequest): Promise<CreateBoardService> => {
   const createBoard = async (boardId: string): Promise<BoardModel> => {
     const data = await BoardModel.create({
       id: boardId,

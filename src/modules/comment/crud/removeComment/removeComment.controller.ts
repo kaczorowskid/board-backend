@@ -2,9 +2,9 @@ import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { removeCommentService } from "./removeComment.service";
-import { RemoveCommentParams } from "./removeComment.types";
+import { RemoveCommentRequest } from "../../../../contracts/comment";
 
-export const removeComment: ExpressMiddleware<RemoveCommentParams> = async (
+export const removeComment: ExpressMiddleware<RemoveCommentRequest> = async (
   req,
   res
 ) => {

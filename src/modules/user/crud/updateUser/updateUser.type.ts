@@ -1,8 +1,6 @@
-export interface Update {
-  first_name: string;
-  last_name: string;
-}
+import { UpdateUserRequest } from "../../../../contracts/user/user.type";
 
-export interface UpdateParams {
-  id: string;
-}
+export interface Update
+  extends Pick<UpdateUserRequest, "first_name" | "last_name"> {}
+
+export interface UpdateParams extends Pick<UpdateUserRequest, "id"> {}

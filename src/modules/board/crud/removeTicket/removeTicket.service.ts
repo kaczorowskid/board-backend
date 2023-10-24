@@ -1,5 +1,5 @@
 import { TicketModel } from "../../../../models";
-import { RemoveTicketParams } from "./removeTicket.types";
+import { RemoveTicketRequest } from "../../../../contracts/board/board.type";
 
 interface RemoveTicketService {
   remove: () => Promise<boolean>;
@@ -7,7 +7,7 @@ interface RemoveTicketService {
 
 export const removeTicketService = async ({
   id,
-}: RemoveTicketParams): Promise<RemoveTicketService> => {
+}: RemoveTicketRequest): Promise<RemoveTicketService> => {
   const remove = async (): Promise<boolean> => {
     const data = await TicketModel.destroy({ where: { id } });
 

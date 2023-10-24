@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { ColumnModel } from "../../../../models";
-import { CreateColumn } from "./createColumn.types";
+import { CreateColumnRequest } from "../../../../contracts/board/board.type";
 
 interface CreateColumnService {
   create: () => Promise<ColumnModel>;
@@ -9,7 +9,7 @@ interface CreateColumnService {
 export const createColumnService = async ({
   title,
   board_id,
-}: CreateColumn): Promise<CreateColumnService> => {
+}: CreateColumnRequest): Promise<CreateColumnService> => {
   const create = async (): Promise<ColumnModel> => {
     const data = await ColumnModel.create({
       id: uuidv4(),

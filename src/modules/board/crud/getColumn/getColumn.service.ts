@@ -1,5 +1,5 @@
 import { ColumnModel } from "../../../../models";
-import { GetColumnParams } from "./getColumn.types";
+import { GetColumnRequest } from "../../../../contracts/board/board.type";
 
 interface GetColumnService {
   get: () => Promise<ColumnModel | null>;
@@ -7,7 +7,7 @@ interface GetColumnService {
 
 export const getColumnService = async ({
   id,
-}: GetColumnParams): Promise<GetColumnService> => {
+}: GetColumnRequest): Promise<GetColumnService> => {
   const get = async (): Promise<ColumnModel | null> => {
     const data = await ColumnModel.findOne({
       where: { id },

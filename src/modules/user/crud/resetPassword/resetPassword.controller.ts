@@ -1,15 +1,14 @@
-import { json } from "sequelize";
 import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { resetPasswordService } from "./resetPassword.service";
-import { ResetPassword } from "./resetPassword.type";
+import { ResetPasswordUserRequest } from "../../../../contracts/user/user.type";
 import { ResetPasswordEnum } from "./resetPassword.enum";
 
-export const resetPassword: ExpressMiddleware<unknown, ResetPassword> = async (
-  req,
-  res
-) => {
+export const resetPassword: ExpressMiddleware<
+  unknown,
+  ResetPasswordUserRequest
+> = async (req, res) => {
   try {
     const { resetPassword } = await resetPasswordService(req.body);
 

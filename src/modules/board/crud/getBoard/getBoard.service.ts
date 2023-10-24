@@ -4,13 +4,13 @@ import {
   CommentModel,
   TicketModel,
 } from "../../../../models";
-import { GetBoardParams } from "./getBoard.types";
+import { GetBoardRequest } from "../../../../contracts/board/board.type";
 
 interface GetBoardService {
   get: () => Promise<BoardModel | null>;
 }
 
-export const getBoardService = async ({ id }: GetBoardParams) => {
+export const getBoardService = async ({ id }: GetBoardRequest) => {
   const get = async (): Promise<BoardModel | null> => {
     const data = await BoardModel.findOne({
       where: { id },

@@ -1,7 +1,5 @@
-export interface EditColumn {
-  title: string;
-}
+import { EditColumnRequest } from "../../../../contracts/board/board.type";
 
-export interface EditColumnParams {
-  id: string;
-}
+export interface EditColumn extends Pick<EditColumnRequest, "title"> {}
+
+export interface EditColumnParams extends Pick<EditColumnRequest, "id"> {}

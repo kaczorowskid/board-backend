@@ -2,9 +2,12 @@ import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { getBoardService } from "./getBoard.service";
-import { GetBoardParams } from "./getBoard.types";
+import { GetBoardRequest } from "../../../../contracts/board/board.type";
 
-export const getBoard: ExpressMiddleware<GetBoardParams> = async (req, res) => {
+export const getBoard: ExpressMiddleware<GetBoardRequest> = async (
+  req,
+  res
+) => {
   try {
     const { get } = await getBoardService(req.params);
 

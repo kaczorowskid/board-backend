@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { BoardModel, SharedBoardModel } from "../../../../models";
 import { v4 as uuidv4 } from "uuid";
-import { ConfirmShareBoard } from "./confirmShareBoardToken.types";
+import { ConfirmShareTokenRequest } from "../../../../contracts/board/board.type";
 
 interface ConfirmShareBoardTokenService {
   boardData: () => Promise<BoardModel | null>;
@@ -11,7 +11,7 @@ interface ConfirmShareBoardTokenService {
 export const confirmShareBoardTokenService = async ({
   token,
   user_id,
-}: ConfirmShareBoard): Promise<ConfirmShareBoardTokenService> => {
+}: ConfirmShareTokenRequest): Promise<ConfirmShareBoardTokenService> => {
   const boardData = async (): Promise<BoardModel | null> => {
     const { board_id } = jwt.verify(token, process.env.SHARE_BOARD_KEY!) as {
       board_id: string;

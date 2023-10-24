@@ -1,9 +1,11 @@
 import jwt from "jsonwebtoken";
 import { mailer, MailType } from "../../../../utils";
 import { UserModel } from "../../../../models";
-import { ResetPassword } from "./resetPassword.type";
+import { ResetPasswordUserRequest } from "../../../../contracts/user/user.type";
 
-export const resetPasswordService = async ({ email }: ResetPassword) => {
+export const resetPasswordService = async ({
+  email,
+}: ResetPasswordUserRequest) => {
   const resetPassword = async (): Promise<void> => {
     const user = await UserModel.findOne({ where: { email } });
 

@@ -2,12 +2,12 @@ import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { getCalendarService } from "./getCalendar.service";
-import { GetCalendarQuery } from "./getCalendar.types";
+import { GetCalendarRequest } from "../../../../contracts/calendar";
 
 export const getCalendar: ExpressMiddleware<
   unknown,
   unknown,
-  GetCalendarQuery
+  GetCalendarRequest
 > = async (req, res) => {
   try {
     const { getCalendar } = await getCalendarService(req.query);

@@ -2,9 +2,9 @@ import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { registerUserService } from "./register.service";
-import { Register } from "./register.type";
+import { RegisterUserRequest } from "../../../../contracts/user/user.type";
 
-export const register: ExpressMiddleware<unknown, Register> = async (
+export const register: ExpressMiddleware<unknown, RegisterUserRequest> = async (
   req,
   res
 ) => {

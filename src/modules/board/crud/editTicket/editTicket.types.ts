@@ -1,12 +1,6 @@
-export interface EditTicket {
-  title: string;
-  description: string;
-  prio: string;
-  start: string;
-  end: string;
-  order: number;
-}
+import { EditTicketRequest } from "../../../../contracts/board/board.type";
 
-export interface EditTicketParams {
-  id: string;
-}
+export interface EditTicket
+  extends Pick<EditTicketRequest, "title" | "description" | "prio"> {}
+
+export interface EditTicketParams extends Pick<EditTicketRequest, "id"> {}

@@ -1,5 +1,5 @@
 import { ColumnModel } from "../../../../models";
-import { RemoveColumnParams } from "./removeColumn.types";
+import { RemoveColumnRequest } from "../../../../contracts/board/board.type";
 
 interface RemoveColumnService {
   remove: () => Promise<boolean>;
@@ -7,7 +7,7 @@ interface RemoveColumnService {
 
 export const removeColumnService = async ({
   id,
-}: RemoveColumnParams): Promise<RemoveColumnService> => {
+}: RemoveColumnRequest): Promise<RemoveColumnService> => {
   const remove = async (): Promise<boolean> => {
     const data = await ColumnModel.destroy({ where: { id } });
 

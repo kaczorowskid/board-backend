@@ -14,9 +14,6 @@ export class TicketModel extends Model<
   declare title: string;
   declare description: string;
   declare prio: string;
-  declare start: string;
-  declare end: string;
-  declare order: number;
   declare column_id: string;
   declare user_id: string;
   declare readonly created_at: CreationOptional<Date>;
@@ -33,9 +30,6 @@ TicketModel.init(
     title: Sequelize.STRING,
     description: Sequelize.STRING,
     prio: Sequelize.STRING,
-    start: Sequelize.STRING,
-    end: Sequelize.STRING,
-    order: Sequelize.INTEGER,
     column_id: Sequelize.UUID,
     user_id: Sequelize.UUID,
     created_at: Sequelize.DATE,

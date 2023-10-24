@@ -5,8 +5,7 @@ import {
   CommentModel,
   TicketModel,
 } from "../../../../models";
-
-import { GetDashboardDataParam } from "./getDashboardData.types";
+import { GetDashboardRequest } from "../../../../contracts/dashboard";
 import dayjs from "dayjs";
 
 interface GetDashboardDataService {
@@ -24,7 +23,7 @@ interface GetDashboardDataService {
 export const getDashboardDataService = async ({
   user_id,
   date,
-}: GetDashboardDataParam): Promise<GetDashboardDataService> => {
+}: GetDashboardRequest): Promise<GetDashboardDataService> => {
   const getBoardRecords = async (): Promise<{
     count: number;
     rows: BoardModel[];

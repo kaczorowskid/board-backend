@@ -2,12 +2,12 @@ import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { getBoardsWithPaginationService } from "./getBoardsWithPagination.service";
-import { GetBoardsWithPaginationQuery } from "./getBoardsWithPagination.type";
+import { GetBoardsWithPaginationRequest } from "../../../../contracts/board/board.type";
 
 export const getBoardsWithPagination: ExpressMiddleware<
   unknown,
   unknown,
-  GetBoardsWithPaginationQuery
+  GetBoardsWithPaginationRequest
 > = async (req, res) => {
   const { user_id, limit, offset, search_value: searchValue } = req.query;
 

@@ -1,5 +1,5 @@
 import { UserModel } from "../../../../models";
-import { GetUser } from "./getUser.types";
+import { GetUserRequest } from "../../../../contracts/user/user.type";
 
 interface GetUserService {
   get: () => Promise<UserModel | null>;
@@ -7,7 +7,7 @@ interface GetUserService {
 
 export const getUserService = async ({
   id,
-}: GetUser): Promise<GetUserService> => {
+}: GetUserRequest): Promise<GetUserService> => {
   const get = async (): Promise<UserModel | null> => {
     const data = await UserModel.findOne({
       where: { id },

@@ -1,9 +1,6 @@
-export interface EditNote {
-  note: string;
-  start_date: string;
-  hour: string;
-}
+import { EditNoteRequest } from "../../../../contracts/calendar";
 
-export interface EditNoteParams {
-  id: string;
-}
+export interface EditNote
+  extends Pick<EditNoteRequest, "note" | "start_date" | "hour"> {}
+
+export interface EditNoteParams extends Pick<EditNoteRequest, "id"> {}

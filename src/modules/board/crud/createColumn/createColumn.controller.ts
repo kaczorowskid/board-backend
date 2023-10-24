@@ -2,12 +2,12 @@ import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { createColumnService } from "./createColumn.service";
-import { CreateColumn } from "./createColumn.types";
+import { CreateColumnRequest } from "../../../../contracts/board/board.type";
 
-export const createColumn: ExpressMiddleware<unknown, CreateColumn> = async (
-  req,
-  res
-) => {
+export const createColumn: ExpressMiddleware<
+  unknown,
+  CreateColumnRequest
+> = async (req, res) => {
   try {
     const { create } = await createColumnService(req.body);
 

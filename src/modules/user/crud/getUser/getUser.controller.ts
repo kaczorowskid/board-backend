@@ -2,9 +2,9 @@ import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { getUserService } from "./getUser.service";
-import { GetUser } from "./getUser.types";
+import { GetUserRequest } from "../../../../contracts/user/user.type";
 
-export const getUser: ExpressMiddleware<GetUser> = async (req, res) => {
+export const getUser: ExpressMiddleware<GetUserRequest> = async (req, res) => {
   try {
     const { get } = await getUserService(req.params);
 

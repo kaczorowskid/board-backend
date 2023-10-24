@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
 import { mailer, MailType } from "../../../../utils";
 import { UserModel } from "../../../../models";
-import { Register } from "./register.type";
+import { RegisterUserRequest } from "../../../../contracts/user/user.type";
 
 interface RegisterUserService {
   register: () => Promise<UserModel>;
@@ -12,9 +12,9 @@ interface RegisterUserService {
 export const registerUserService = async ({
   email,
   password,
-  first_name,
-  last_name,
-}: Register): Promise<RegisterUserService> => {
+  first_name: firstName,
+  last_name: lastName,
+}: RegisterUserRequest): Promise<RegisterUserService> => {
   //Add migration to database. email -> unique
   const register = async (): Promise<UserModel> => {
     const passwordHash = await bcrypt.hash(password, 10);
@@ -22,8 +22,8 @@ export const registerUserService = async ({
       id: uuidv4(),
       email,
       password: passwordHash,
-      first_name,
-      last_name,
+      first_name: firstName || "",
+      last_name: lastName || "",
       is_active: false,
     });
 

@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { CommentModel, TicketModel } from "../../../../models";
-import { CreateComment } from "./createComment.type";
+import { CreateCommentRequest } from "../../../../contracts/comment";
 
 interface CreateCommentService {
   checkIfTicketExist: () => Promise<boolean>;
@@ -11,7 +11,7 @@ export const createCommentService = async ({
   text,
   ticket_id,
   user_id,
-}: CreateComment): Promise<CreateCommentService> => {
+}: CreateCommentRequest): Promise<CreateCommentService> => {
   const checkIfTicketExist = async (): Promise<boolean> => {
     const data = await TicketModel.count({ where: { id: ticket_id } });
     return !!data;

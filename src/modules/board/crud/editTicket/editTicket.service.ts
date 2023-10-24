@@ -10,9 +10,6 @@ export const editTicketService = async ({
   title,
   description,
   prio,
-  start,
-  end,
-  order,
 }: EditTicket & EditTicketParams): Promise<EditTicketService> => {
   const edit = async (): Promise<boolean> => {
     const [affectedCount] = await TicketModel.update(
@@ -20,9 +17,6 @@ export const editTicketService = async ({
         title,
         description,
         prio,
-        start,
-        end,
-        order,
       },
       {
         where: { id },

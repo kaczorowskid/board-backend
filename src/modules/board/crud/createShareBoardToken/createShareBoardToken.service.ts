@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { BoardModel } from "../../../../models";
-import { CreateShareBoardToken } from "./createShareBoardToken.types";
+import { CreateShareTokenRequest } from "../../../../contracts/board/board.type";
 
 interface CreateShareBoardTokenService {
   chceckIfBoardExists: () => Promise<boolean>;
@@ -9,7 +9,7 @@ interface CreateShareBoardTokenService {
 
 export const createShareBoardTokenService = async ({
   board_id,
-}: CreateShareBoardToken): Promise<CreateShareBoardTokenService> => {
+}: CreateShareTokenRequest): Promise<CreateShareBoardTokenService> => {
   const chceckIfBoardExists = async (): Promise<boolean> => {
     const data = await BoardModel.findOne({
       where: {
