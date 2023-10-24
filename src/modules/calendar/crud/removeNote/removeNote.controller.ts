@@ -2,7 +2,7 @@ import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { removeNoteService } from "./removeNote.service";
-import { RemoveNoteRequest } from "../../../../contracts/calendar";
+import { RemoveNoteRequest } from "../../../../contracts/calendar/calendar.type";
 
 export const removeNote: ExpressMiddleware<RemoveNoteRequest> = async (
   req,

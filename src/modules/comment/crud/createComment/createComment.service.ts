@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { CommentModel, TicketModel } from "../../../../models";
-import { CreateCommentRequest } from "../../../../contracts/comment";
+import { CreateCommentRequest } from "../../../../contracts/comment/comment.type";
 
 interface CreateCommentService {
   checkIfTicketExist: () => Promise<boolean>;

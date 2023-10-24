@@ -1,5 +1,5 @@
 import { CalendarModel } from "../../../../models";
-import { GetNoteRequest } from "../../../../contracts/calendar";
+import { GetNoteRequest } from "../../../../contracts/calendar/calendar.type";
 
 interface GetNoteService {
   getNote: () => Promise<CalendarModel | null>;

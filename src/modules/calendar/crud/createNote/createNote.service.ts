@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { CalendarModel } from "../../../../models/CalendarModel.model";
-import { CreateNoteRequest } from "../../../../contracts/calendar";
+import { CreateNoteRequest } from "../../../../contracts/calendar/calendar.type";
 import dayjs from "dayjs";
 
 interface CreateNoteService {
