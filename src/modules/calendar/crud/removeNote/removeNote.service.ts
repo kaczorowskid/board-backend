@@ -1,5 +1,5 @@
 import { CalendarModel } from "../../../../models";
-import { RemoveNoteRequest } from "../../../../contracts/calendar";
+import { RemoveNoteRequest } from "../../../../contracts/calendar/calendar.type";
 
 interface RemoveNoteService {
   removeNote: () => Promise<boolean>;

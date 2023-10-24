@@ -5,7 +5,7 @@ import {
   CommentModel,
   TicketModel,
 } from "../../../../models";
-import { GetDashboardRequest } from "../../../../contracts/dashboard";
+import { GetDashboardRequest } from "../../../../contracts/dashboard/dashboard.type";
 import dayjs from "dayjs";
 
 interface GetDashboardDataService {

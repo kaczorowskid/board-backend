@@ -1,6 +1,6 @@
 import { Op } from "sequelize";
 import { CalendarModel } from "../../../../models";
-import { GetCalendarRequest } from "../../../../contracts/calendar";
+import { GetCalendarRequest } from "../../../../contracts/calendar/calendar.type";
 import dayjs from "dayjs";
 
 interface GetCalendarService {

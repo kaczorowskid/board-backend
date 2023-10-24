@@ -2,7 +2,7 @@ import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { getDashboardDataService } from "./getDashboardData.service";
-import { GetDashboardRequest } from "../../../../contracts/dashboard";
+import { GetDashboardRequest } from "../../../../contracts/dashboard/dashboard.type";
 
 export const getDashboardData: ExpressMiddleware<GetDashboardRequest> = async (
   req,

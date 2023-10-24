@@ -1,5 +1,5 @@
 import { CalendarModel } from "../../../../models";
-import { GetNotesByDateRequest } from "../../../../contracts/calendar";
+import { GetNotesByDateRequest } from "../../../../contracts/calendar/calendar.type";
 
 interface GetNotesByDateService {
   getNoteByDate: () => Promise<CalendarModel[]>;

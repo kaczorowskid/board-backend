@@ -2,7 +2,7 @@ import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { getNotesByDateService } from "./getNotesByDate.service";
-import { GetNotesByDateRequest } from "../../../../contracts/calendar";
+import { GetNotesByDateRequest } from "../../../../contracts/calendar/calendar.type";
 
 export const getNotesByDate: ExpressMiddleware<
   unknown,

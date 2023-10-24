@@ -1,5 +1,5 @@
 import { CommentModel } from "../../../../models";
-import { RemoveCommentRequest } from "../../../../contracts/comment";
+import { RemoveCommentRequest } from "../../../../contracts/comment/comment.type";
 
 interface RemoveCommentService {
   remove: () => Promise<boolean>;

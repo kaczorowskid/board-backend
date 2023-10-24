@@ -3,7 +3,7 @@ import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { CreateCommentResult } from "./createComment.enum";
 import { createCommentService } from "./createComment.service";
-import { CreateCommentRequest } from "../../../../contracts/comment";
+import { CreateCommentRequest } from "../../../../contracts/comment/comment.type";
 
 export const createComment: ExpressMiddleware<
   unknown,
