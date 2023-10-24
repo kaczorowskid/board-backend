@@ -2,12 +2,11 @@ import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { confirmAccountService } from "./confirmAccount.service";
-import { ConfirmAccount } from "./confirmAccount.type";
+import { ConfirmAccountUserRequest } from "../../../../contracts/user/user.type";
 
-export const confirmAccount: ExpressMiddleware<ConfirmAccount> = async (
-  req,
-  res
-) => {
+export const confirmAccount: ExpressMiddleware<
+  ConfirmAccountUserRequest
+> = async (req, res) => {
   try {
     const { confirm } = await confirmAccountService(req.params);
 

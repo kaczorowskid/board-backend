@@ -2,12 +2,12 @@ import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { createTicketService } from "./createTicket.service";
-import { CreateTicket } from "./createTicket.types";
+import { CreateTicketRequest } from "../../../../contracts/board/board.type";
 
-export const createTicket: ExpressMiddleware<unknown, CreateTicket> = async (
-  req,
-  res
-) => {
+export const createTicket: ExpressMiddleware<
+  unknown,
+  CreateTicketRequest
+> = async (req, res) => {
   try {
     const { create } = await createTicketService(req.body);
 

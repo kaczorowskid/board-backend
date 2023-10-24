@@ -1,5 +1,5 @@
 import { CommentModel, TicketModel, UserModel } from "../../../../models";
-import { GetTicketParams } from "./getTicket.types";
+import { GetTicketRequest } from "../../../../contracts/board/board.type";
 
 interface GetTicketService {
   get: () => Promise<TicketModel | null>;
@@ -7,7 +7,7 @@ interface GetTicketService {
 
 export const getTicketService = async ({
   id,
-}: GetTicketParams): Promise<GetTicketService> => {
+}: GetTicketRequest): Promise<GetTicketService> => {
   const get = async (): Promise<TicketModel | null> => {
     const data = await TicketModel.findOne({
       where: { id },

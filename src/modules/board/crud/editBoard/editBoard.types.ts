@@ -1,8 +1,6 @@
-export interface EditBoard {
-  title: string;
-  description: string;
-}
+import { EditBoardRequest } from "../../../../contracts/board/board.type";
 
-export interface EditBoardParams {
-  id: string;
-}
+export interface EditBoard
+  extends Pick<EditBoardRequest, "title" | "description"> {}
+
+export interface EditBoardParams extends Pick<EditBoardRequest, "id"> {}

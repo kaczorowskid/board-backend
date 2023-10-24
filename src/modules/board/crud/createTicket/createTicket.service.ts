@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { TicketModel } from "../../../../models";
-import { CreateTicket } from "./createTicket.types";
+import { CreateTicketRequest } from "../../../../contracts/board/board.type";
 
 interface CreateTicketService {
   create: () => Promise<TicketModel>;
@@ -9,22 +9,16 @@ interface CreateTicketService {
 export const createTicketService = async ({
   title,
   description,
-  start,
-  end,
   prio,
-  order,
   column_id,
   user_id,
-}: CreateTicket): Promise<CreateTicketService> => {
+}: CreateTicketRequest): Promise<CreateTicketService> => {
   const create = async (): Promise<TicketModel> => {
     const data = await TicketModel.create({
       id: uuidv4(),
       title,
       description,
-      start,
-      end,
       prio,
-      order,
       column_id,
       user_id,
     });

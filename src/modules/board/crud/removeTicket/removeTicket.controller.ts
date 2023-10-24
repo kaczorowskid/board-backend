@@ -2,9 +2,9 @@ import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { removeTicketService } from "./removeTicket.service";
-import { RemoveTicketParams } from "./removeTicket.types";
+import { RemoveTicketRequest } from "../../../../contracts/board/board.type";
 
-export const removeTicket: ExpressMiddleware<RemoveTicketParams> = async (
+export const removeTicket: ExpressMiddleware<RemoveTicketRequest> = async (
   req,
   res
 ) => {

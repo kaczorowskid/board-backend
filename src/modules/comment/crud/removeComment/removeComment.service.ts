@@ -1,5 +1,5 @@
 import { CommentModel } from "../../../../models";
-import { RemoveCommentParams } from "./removeComment.types";
+import { RemoveCommentRequest } from "../../../../contracts/comment";
 
 interface RemoveCommentService {
   remove: () => Promise<boolean>;
@@ -7,7 +7,7 @@ interface RemoveCommentService {
 
 export const removeCommentService = async ({
   id,
-}: RemoveCommentParams): Promise<RemoveCommentService> => {
+}: RemoveCommentRequest): Promise<RemoveCommentService> => {
   const remove = async (): Promise<boolean> => {
     const data = await CommentModel.destroy({ where: { id } });
     return !!data;

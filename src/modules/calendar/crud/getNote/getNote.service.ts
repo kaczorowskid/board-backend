@@ -1,5 +1,5 @@
 import { CalendarModel } from "../../../../models";
-import { GetNoteParams } from "./getNote.types";
+import { GetNoteRequest } from "../../../../contracts/calendar";
 
 interface GetNoteService {
   getNote: () => Promise<CalendarModel | null>;
@@ -7,7 +7,7 @@ interface GetNoteService {
 
 export const getNoteService = async ({
   id,
-}: GetNoteParams): Promise<GetNoteService> => {
+}: GetNoteRequest): Promise<GetNoteService> => {
   const getNote = async (): Promise<CalendarModel | null> => {
     const data = await CalendarModel.findOne({
       where: { id },

@@ -2,11 +2,12 @@ import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { getDashboardDataService } from "./getDashboardData.service";
-import { GetDashboardDataParam } from "./getDashboardData.types";
+import { GetDashboardRequest } from "../../../../contracts/dashboard";
 
-export const getDashboardData: ExpressMiddleware<
-  GetDashboardDataParam
-> = async (req, res) => {
+export const getDashboardData: ExpressMiddleware<GetDashboardRequest> = async (
+  req,
+  res
+) => {
   try {
     const { getBoardRecords, getTicketRecords, getCalendarRecords } =
       await getDashboardDataService(req.params);

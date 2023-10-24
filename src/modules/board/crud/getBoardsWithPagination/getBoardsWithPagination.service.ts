@@ -1,6 +1,6 @@
 import { BoardModel, UserModel } from "../../../../models";
 import { paginationHelper } from "../../../helpers";
-import { GetBoardsWithPaginationQuery } from "./getBoardsWithPagination.type";
+import { GetBoardsWithPaginationRequest } from "../../../../contracts/board/board.type";
 
 interface GetBoardsWithPaginationService {
   get: () => Promise<{
@@ -14,7 +14,7 @@ export const getBoardsWithPaginationService = async ({
   limit,
   search_value: searchValue,
   user_id,
-}: GetBoardsWithPaginationQuery): Promise<GetBoardsWithPaginationService> => {
+}: GetBoardsWithPaginationRequest): Promise<GetBoardsWithPaginationService> => {
   const get = async (): Promise<{
     count: number;
     rows: BoardModel[];

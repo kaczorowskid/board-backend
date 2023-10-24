@@ -2,9 +2,9 @@ import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { getColumnService } from "./getColumn.service";
-import { GetColumnParams } from "./getColumn.types";
+import { GetColumnRequest } from "../../../../contracts/board/board.type";
 
-export const getColumn: ExpressMiddleware<GetColumnParams> = async (
+export const getColumn: ExpressMiddleware<GetColumnRequest> = async (
   req,
   res
 ) => {

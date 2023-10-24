@@ -11,7 +11,7 @@ export class CalendarModel extends Model<
   InferCreationAttributes<CalendarModel>
 > {
   declare id: string;
-  declare start_date: string;
+  declare start_date: Date;
   declare hour: string;
   declare note: string;
   declare user_id: string;

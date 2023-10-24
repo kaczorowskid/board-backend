@@ -19,7 +19,7 @@ export const editNoteService = async ({
     const [affectedCount] = await CalendarModel.update(
       {
         note,
-        start_date: startDate,
+        start_date: startDate as any,
         hour: startHour,
       },
       {

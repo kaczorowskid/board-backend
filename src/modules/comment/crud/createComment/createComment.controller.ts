@@ -3,12 +3,12 @@ import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { CreateCommentResult } from "./createComment.enum";
 import { createCommentService } from "./createComment.service";
-import { CreateComment } from "./createComment.type";
+import { CreateCommentRequest } from "../../../../contracts/comment";
 
-export const createComment: ExpressMiddleware<unknown, CreateComment> = async (
-  req,
-  res
-) => {
+export const createComment: ExpressMiddleware<
+  unknown,
+  CreateCommentRequest
+> = async (req, res) => {
   try {
     const { checkIfTicketExist, createComment } = await createCommentService(
       req.body

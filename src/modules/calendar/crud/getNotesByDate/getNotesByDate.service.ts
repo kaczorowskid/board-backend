@@ -1,5 +1,5 @@
 import { CalendarModel } from "../../../../models";
-import { GetNotesByDateQuery } from "./getNotesByDate.types";
+import { GetNotesByDateRequest } from "../../../../contracts/calendar";
 
 interface GetNotesByDateService {
   getNoteByDate: () => Promise<CalendarModel[]>;
@@ -8,7 +8,7 @@ interface GetNotesByDateService {
 export const getNotesByDateService = async ({
   user_id,
   date,
-}: GetNotesByDateQuery): Promise<GetNotesByDateService> => {
+}: GetNotesByDateRequest): Promise<GetNotesByDateService> => {
   const getNoteByDate = async (): Promise<CalendarModel[]> => {
     const data = await CalendarModel.findAll({
       where: {

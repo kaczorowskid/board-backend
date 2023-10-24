@@ -2,12 +2,12 @@ import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { getNotesByDateService } from "./getNotesByDate.service";
-import { GetNotesByDateQuery } from "./getNotesByDate.types";
+import { GetNotesByDateRequest } from "../../../../contracts/calendar";
 
 export const getNotesByDate: ExpressMiddleware<
   unknown,
   unknown,
-  GetNotesByDateQuery
+  GetNotesByDateRequest
 > = async (req, res) => {
   try {
     const { getNoteByDate } = await getNotesByDateService(req.query);

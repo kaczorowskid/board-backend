@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
-import { CreateNote } from "./createNote.type";
 import { CalendarModel } from "../../../../models/CalendarModel.model";
+import { CreateNoteRequest } from "../../../../contracts/calendar";
 import dayjs from "dayjs";
 
 interface CreateNoteService {
@@ -12,13 +12,13 @@ export const createNoteService = async ({
   hour,
   note,
   user_id,
-}: CreateNote): Promise<CreateNoteService> => {
+}: CreateNoteRequest): Promise<CreateNoteService> => {
   const create = async (): Promise<CalendarModel> => {
     const startDate = dayjs(start_date).format("YYYY-MM-DD");
 
     const data = await CalendarModel.create({
       id: uuidv4(),
-      start_date: startDate,
+      start_date: startDate as any,
       hour,
       note,
       user_id,

@@ -2,9 +2,9 @@ import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { removeColumnService } from "./removeColumn.service";
-import { RemoveColumnParams } from "./removeColumn.types";
+import { RemoveColumnRequest } from "../../../../contracts/board/board.type";
 
-export const removeColumn: ExpressMiddleware<RemoveColumnParams> = async (
+export const removeColumn: ExpressMiddleware<RemoveColumnRequest> = async (
   req,
   res
 ) => {

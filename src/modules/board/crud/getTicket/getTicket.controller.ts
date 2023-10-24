@@ -2,9 +2,9 @@ import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { getTicketService } from "./getTicket.service";
-import { GetTicketParams } from "./getTicket.types";
+import { GetTicketRequest } from "../../../../contracts/board/board.type";
 
-export const getTicket: ExpressMiddleware<GetTicketParams> = async (
+export const getTicket: ExpressMiddleware<GetTicketRequest> = async (
   req,
   res
 ) => {

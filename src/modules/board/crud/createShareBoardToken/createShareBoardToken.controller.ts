@@ -3,11 +3,11 @@ import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { CreateShareBoardTokenEnum } from "./createShareBoardToken.enum";
 import { createShareBoardTokenService } from "./createShareBoardToken.service";
-import { CreateShareBoardToken } from "./createShareBoardToken.types";
+import { CreateShareTokenRequest } from "../../../../contracts/board/board.type";
 
 export const createShareBoardToken: ExpressMiddleware<
   unknown,
-  CreateShareBoardToken
+  CreateShareTokenRequest
 > = async (req, res) => {
   try {
     const { chceckIfBoardExists, createToken } =

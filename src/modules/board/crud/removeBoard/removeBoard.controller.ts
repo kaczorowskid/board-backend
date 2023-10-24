@@ -2,9 +2,9 @@ import { ExpressMiddleware } from "../../../../types";
 import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { removeBoardService } from "./removeBoard.service";
-import { RemoveBoardParams } from "./removeBoard.types";
+import { RemoveBoardRequest } from "../../../../contracts/board/board.type";
 
-export const removeBoard: ExpressMiddleware<RemoveBoardParams> = async (
+export const removeBoard: ExpressMiddleware<RemoveBoardRequest> = async (
   req,
   res
 ) => {

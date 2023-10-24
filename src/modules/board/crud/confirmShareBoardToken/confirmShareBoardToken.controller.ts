@@ -3,11 +3,11 @@ import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { ConfirmShareBoardTokenResult } from "./confirmShareBoardToken.enum";
 import { confirmShareBoardTokenService } from "./confirmShareBoardToken.service";
-import { ConfirmShareBoard } from "./confirmShareBoardToken.types";
+import { ConfirmShareTokenRequest } from "../../../../contracts/board/board.type";
 
 export const confirmShareBoardToken: ExpressMiddleware<
   unknown,
-  ConfirmShareBoard
+  ConfirmShareTokenRequest
 > = async (req, res) => {
   try {
     const { boardData, createSharedBoard } =
