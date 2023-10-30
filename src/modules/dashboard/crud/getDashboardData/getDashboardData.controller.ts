@@ -3,18 +3,22 @@ import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { getDashboardDataService } from "./getDashboardData.service";
 import { GetDashboardRequest } from "../../../../contracts/dashboard/dashboard.type";
+import { getDashboardRequest } from "../../../../contracts/dashboard/dashboard.schema";
 
 export const getDashboardData: ExpressMiddleware<GetDashboardRequest> = async (
   req,
   res
 ) => {
   try {
+    const request = getDashboardRequest.parse(req.params);
     const { getBoardRecords, getTicketRecords, getCalendarRecords } =
-      await getDashboardDataService(req.params);
+      await getDashboardDataService(request);
 
-    const boardRecords = await getBoardRecords();
-    const ticketRecords = await getTicketRecords();
-    const calendarRecords = await getCalendarRecords();
+    const [boardRecords, ticketRecords, calendarRecords] = await Promise.all([
+      getBoardRecords(),
+      getTicketRecords(),
+      getCalendarRecords(),
+    ]);
 
     const mappedData = {
       recentBoards: {

@@ -3,13 +3,18 @@ import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { editBoardService } from "./editBoard.service";
 import { EditBoard, EditBoardParams } from "./editBoard.types";
+import { editBoardRequestSchema } from "../../../../contracts/board/board.schema";
 
 export const editBoard: ExpressMiddleware<EditBoardParams, EditBoard> = async (
   req,
   res
 ) => {
   try {
-    const { edit } = await editBoardService({ ...req.params, ...req.body });
+    const request = editBoardRequestSchema.parse({
+      ...req.params,
+      ...req.body,
+    });
+    const { edit } = await editBoardService(request);
 
     const result = await edit();
 

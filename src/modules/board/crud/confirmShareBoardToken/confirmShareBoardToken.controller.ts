@@ -4,14 +4,16 @@ import { dbErrorFormatter } from "../../../helpers";
 import { ConfirmShareBoardTokenResult } from "./confirmShareBoardToken.enum";
 import { confirmShareBoardTokenService } from "./confirmShareBoardToken.service";
 import { ConfirmShareTokenRequest } from "../../../../contracts/board/board.type";
+import { confirmShareTokenRequestSchema } from "../../../../contracts/board/board.schema";
 
 export const confirmShareBoardToken: ExpressMiddleware<
   unknown,
   ConfirmShareTokenRequest
 > = async (req, res) => {
   try {
+    const request = confirmShareTokenRequestSchema.parse(req.body);
     const { boardData, createSharedBoard } =
-      await confirmShareBoardTokenService(req.body);
+      await confirmShareBoardTokenService(request);
 
     const data = await boardData();
 

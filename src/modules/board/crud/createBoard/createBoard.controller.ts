@@ -4,14 +4,16 @@ import { HTTPStatus } from "../../../../utils";
 import { createBoardService } from "./createBoard.service";
 import { CreateBoardRequest } from "../../../../contracts/board/board.type";
 import { dbErrorFormatter } from "../../../helpers";
+import { createBoardRequestSchema } from "../../../../contracts/board/board.schema";
 
 export const createBoard: ExpressMiddleware<
   unknown,
   CreateBoardRequest
 > = async (req, res) => {
   try {
+    const request = createBoardRequestSchema.parse(req.body);
     const { createBoard, createSharedBoard } = await createBoardService(
-      req.body
+      request
     );
 
     const boardId = uuidv4();

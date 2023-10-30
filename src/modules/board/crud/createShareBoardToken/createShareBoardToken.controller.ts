@@ -4,14 +4,16 @@ import { dbErrorFormatter } from "../../../helpers";
 import { CreateShareBoardTokenEnum } from "./createShareBoardToken.enum";
 import { createShareBoardTokenService } from "./createShareBoardToken.service";
 import { CreateShareTokenRequest } from "../../../../contracts/board/board.type";
+import { createShareTokenRequestSchema } from "../../../../contracts/board/board.schema";
 
 export const createShareBoardToken: ExpressMiddleware<
   unknown,
   CreateShareTokenRequest
 > = async (req, res) => {
   try {
+    const request = createShareTokenRequestSchema.parse(req.body);
     const { chceckIfBoardExists, createToken } =
-      await createShareBoardTokenService(req.body);
+      await createShareBoardTokenService(request);
 
     const isExits = await chceckIfBoardExists();
 

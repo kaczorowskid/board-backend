@@ -3,13 +3,18 @@ import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { editColumnService } from "./editColumn.service";
 import { EditColumn, EditColumnParams } from "./editColumn.types";
+import { editColumnRequestSchema } from "../../../../contracts/board/board.schema";
 
 export const editColumn: ExpressMiddleware<
   EditColumnParams,
   EditColumn
 > = async (req, res) => {
   try {
-    const { edit } = await editColumnService({ ...req.params, ...req.body });
+    const request = editColumnRequestSchema.parse({
+      ...req.params,
+      ...req.body,
+    });
+    const { edit } = await editColumnService(request);
 
     const result = await edit();
 
