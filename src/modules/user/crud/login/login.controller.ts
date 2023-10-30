@@ -3,11 +3,13 @@ import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { loginUserService } from "./login.service";
 import { Login } from "./login.type";
+import { loginUserRequestSchema } from "../../../../contracts/user/user.schema";
 
 export const login: ExpressMiddleware<unknown, Login> = async (req, res) => {
   try {
+    const request = loginUserRequestSchema.parse(req.body);
     const { getUserData, generateAccessToken } = await loginUserService(
-      req.body
+      request
     );
 
     const userData = await getUserData();

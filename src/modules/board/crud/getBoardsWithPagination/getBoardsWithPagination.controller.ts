@@ -3,6 +3,7 @@ import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { getBoardsWithPaginationService } from "./getBoardsWithPagination.service";
 import { GetBoardsWithPaginationRequest } from "../../../../contracts/board/board.type";
+import { getBoardsWithPaginationRequestSchema } from "../../../../contracts/board/board.schema";
 
 export const getBoardsWithPagination: ExpressMiddleware<
   unknown,
@@ -12,12 +13,13 @@ export const getBoardsWithPagination: ExpressMiddleware<
   const { user_id, limit, offset, search_value: searchValue } = req.query;
 
   try {
-    const { get } = await getBoardsWithPaginationService({
+    const request = getBoardsWithPaginationRequestSchema.parse({
       user_id,
       limit: Number(limit),
       offset: Number(offset),
       search_value: searchValue,
     });
+    const { get } = await getBoardsWithPaginationService(request);
 
     const result = await get();
     res.status(HTTPStatus.OK).send(result || []);

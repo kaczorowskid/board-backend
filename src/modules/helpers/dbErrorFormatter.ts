@@ -1,9 +1,1 @@
-import { ValidationError } from "sequelize";
-
-export const dbErrorFormatter = (error: any): ValidationError | undefined => {
-  if (error as ValidationError) {
-    return error.message;
-  }
-
-  return undefined;
-};
+export const dbErrorFormatter = (error: any) => (error as Error).message;

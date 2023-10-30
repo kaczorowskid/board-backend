@@ -4,14 +4,16 @@ import { dbErrorFormatter } from "../../../helpers";
 import { CreateCommentResult } from "./createComment.enum";
 import { createCommentService } from "./createComment.service";
 import { CreateCommentRequest } from "../../../../contracts/comment/comment.type";
+import { createCommentRequestSchema } from "../../../../contracts/comment/comments.schema";
 
 export const createComment: ExpressMiddleware<
   unknown,
   CreateCommentRequest
 > = async (req, res) => {
   try {
+    const request = createCommentRequestSchema.parse(req.body);
     const { checkIfTicketExist, createComment } = await createCommentService(
-      req.body
+      request
     );
 
     const isExists = await checkIfTicketExist();

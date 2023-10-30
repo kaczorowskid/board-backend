@@ -3,13 +3,15 @@ import { HTTPStatus } from "../../../../utils";
 import { dbErrorFormatter } from "../../../helpers";
 import { removeNoteService } from "./removeNote.service";
 import { RemoveNoteRequest } from "../../../../contracts/calendar/calendar.type";
+import { removeNoteRequestSchema } from "../../../../contracts/calendar/calendar.schema";
 
 export const removeNote: ExpressMiddleware<RemoveNoteRequest> = async (
   req,
   res
 ) => {
   try {
-    const { removeNote } = await removeNoteService(req.params);
+    const request = removeNoteRequestSchema.parse(req.params);
+    const { removeNote } = await removeNoteService(request);
 
     const result = await removeNote();
     res
