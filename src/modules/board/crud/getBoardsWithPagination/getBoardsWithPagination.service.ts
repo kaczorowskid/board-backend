@@ -1,6 +1,6 @@
 import { BoardModel, UserModel } from "../../../../models";
-import { paginationHelper } from "../../../helpers";
 import { GetBoardsWithPaginationRequest } from "../../../../contracts/board/board.type";
+import { Op } from "sequelize";
 
 interface GetBoardsWithPaginationService {
   get: () => Promise<{
@@ -36,8 +36,19 @@ export const getBoardsWithPaginationService = async ({
     );
 
     const { count, rows } = await BoardModel.findAndCountAll({
-      ...paginationHelper({ offset, limit, searchValue }, { id: boardsIds }),
       order: [["updated_at", "DESC"]],
+      limit: limit || 5,
+      offset: offset || 0,
+      where: {
+        id: boardsIds,
+        ...(searchValue
+          ? {
+              name: {
+                [Op.like]: `%${searchValue}%`,
+              },
+            }
+          : {}),
+      },
     });
 
     return { count, rows };

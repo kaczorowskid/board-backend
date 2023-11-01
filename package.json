@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
-    "board-contracts": "^1.1.1",
+    "board-contracts": "^1.1.2",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dayjs": "^1.11.10",
