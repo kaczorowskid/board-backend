@@ -30,8 +30,8 @@ export const getDashboardDataService = async ({
   }> => {
     const { count, rows } = await BoardModel.findAndCountAll({
       where: { user_id },
-      limit: 5,
       order: [["created_at", "DESC"]],
+      limit: 5,
     });
 
     return { count, rows };
@@ -43,13 +43,13 @@ export const getDashboardDataService = async ({
   }> => {
     const { count, rows } = await TicketModel.findAndCountAll({
       where: { user_id },
-      limit: 5,
       order: [["created_at", "DESC"]],
       include: [
         {
           model: CommentModel,
         },
       ],
+      limit: 5,
     });
 
     return { count, rows };
