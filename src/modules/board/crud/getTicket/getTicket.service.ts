@@ -21,6 +21,7 @@ export const getTicketService = async ({
           ],
         },
       ],
+      order: [[CommentModel, "created_at", "DESC"]],
     });
 
     return data;
