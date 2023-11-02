@@ -7,12 +7,13 @@ import {
   getNotesByDate,
   removeNote,
 } from "../modules";
+import { authentication } from "../middleware";
 
 export const calendarRouter = Router();
 
-calendarRouter.post("/note", createNote);
-calendarRouter.patch("/note/:id", editNote);
-calendarRouter.delete("/note/:id", removeNote);
-calendarRouter.get("/note/:id", getNote);
-calendarRouter.get("/", getCalendar);
-calendarRouter.get("/notes", getNotesByDate);
+calendarRouter.post("/note", authentication, createNote);
+calendarRouter.patch("/note/:id", authentication, editNote);
+calendarRouter.delete("/note/:id", authentication, removeNote);
+calendarRouter.get("/note/:id", authentication, getNote);
+calendarRouter.get("/", authentication, getCalendar);
+calendarRouter.get("/notes", authentication, getNotesByDate);
