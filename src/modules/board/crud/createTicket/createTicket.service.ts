@@ -19,6 +19,7 @@ export const createTicketService = async ({
       title,
       description,
       prio,
+      order: 0,
       column_id,
       user_id,
     });

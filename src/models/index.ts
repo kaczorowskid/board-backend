@@ -28,13 +28,13 @@ UserModel.hasMany(CommentModel, { foreignKey: "user_id" });
 UserModel.belongsToMany(BoardModel, {
   through: SharedBoardModel,
   foreignKey: "user_id",
-  as: "usersRel",
+  as: "users_board",
 });
 
 BoardModel.belongsToMany(UserModel, {
   through: SharedBoardModel,
   foreignKey: "board_id",
-  as: "boardsRel",
+  as: "boards_user",
 });
 
 export * from "./UserModel.model";
