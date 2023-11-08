@@ -1,6 +1,7 @@
 import { BoardModel, UserModel } from "../../../../models";
 import { GetBoardsWithPaginationRequest } from "../../../../contracts/board/board.type";
 import { Op } from "sequelize";
+import { UsersBoards } from "./getBoardsWithPagination.type";
 
 interface GetBoardsWithPaginationService {
   get: () => Promise<{
@@ -19,20 +20,20 @@ export const getBoardsWithPaginationService = async ({
     count: number;
     rows: BoardModel[];
   }> => {
-    const userBoards = await UserModel.findOne({
+    const userBoards = (await UserModel.findOne({
       where: {
         id: user_id,
       },
       include: [
         {
           model: BoardModel,
-          as: "usersRel",
+          as: "users_board",
         },
       ],
-    });
+    })) as UsersBoards;
 
-    const boardsIds = (userBoards as any).usersRel.map(
-      (board: any) => board.sharedBoards.board_id
+    const boardsIds = userBoards.users_board.map(
+      (board) => board.sharedBoards.board_id
     );
 
     const { count, rows } = await BoardModel.findAndCountAll({
