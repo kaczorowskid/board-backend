@@ -4,3 +4,4 @@ export * from "./removeNote";
 export * from "./getNote";
 export * from "./getCalendar";
 export * from "./getNotesByDate";
+export * from "./updateNoteStatus";

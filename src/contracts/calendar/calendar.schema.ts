@@ -5,6 +5,7 @@ import {
   getNoteRequestSchema,
   getNotesByDateRequestSchema,
   removeNoteRequestSchema,
+  updateNoteStatusRequestSchema,
 } from "board-contracts/lib/calendar/schemas";
 
 export {
@@ -14,4 +15,5 @@ export {
   getNoteRequestSchema,
   getNotesByDateRequestSchema,
   removeNoteRequestSchema,
+  updateNoteStatusRequestSchema,
 };
