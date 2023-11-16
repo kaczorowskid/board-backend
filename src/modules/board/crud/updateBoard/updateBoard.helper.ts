@@ -29,10 +29,11 @@ export const updateTicket = async (
     title: ticketTitle,
     description,
     column_id,
+    order,
   } = ticketData;
 
   await TicketModel.update(
-    { title: ticketTitle, description, column_id },
+    { title: ticketTitle, description, column_id, order },
     { where: { id: ticketId }, transaction }
   );
 };
