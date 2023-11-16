@@ -6,6 +6,7 @@ import {
   getNote,
   getNotesByDate,
   removeNote,
+  updateNoteStatus,
 } from "../modules";
 import { authentication } from "../middleware";
 
@@ -17,3 +18,4 @@ calendarRouter.delete("/note/:id", authentication, removeNote);
 calendarRouter.get("/note/:id", authentication, getNote);
 calendarRouter.get("/", authentication, getCalendar);
 calendarRouter.get("/notes", authentication, getNotesByDate);
+calendarRouter.patch("/note-status/:id", authentication, updateNoteStatus);

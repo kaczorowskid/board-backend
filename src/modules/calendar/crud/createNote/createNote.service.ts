@@ -9,7 +9,6 @@ interface CreateNoteService {
 
 export const createNoteService = async ({
   start_date,
-  hour,
   note,
   user_id,
 }: CreateNoteRequest): Promise<CreateNoteService> => {
@@ -18,9 +17,9 @@ export const createNoteService = async ({
 
     const data = await CalendarModel.create({
       id: uuidv4(),
-      start_date: startDate as any,
-      hour,
+      start_date: startDate as unknown as Date,
       note,
+      is_done: false,
       user_id,
     });
 
