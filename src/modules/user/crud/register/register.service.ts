@@ -12,18 +12,17 @@ interface RegisterUserService {
 export const registerUserService = async ({
   email,
   password,
-  first_name: firstName,
-  last_name: lastName,
+  first_name,
+  last_name,
 }: RegisterUserRequest): Promise<RegisterUserService> => {
-  //Add migration to database. email -> unique
   const register = async (): Promise<UserModel> => {
     const passwordHash = await bcrypt.hash(password, 10);
     const data = await UserModel.create({
       id: uuidv4(),
       email,
       password: passwordHash,
-      first_name: firstName || "",
-      last_name: lastName || "",
+      first_name,
+      last_name,
       is_active: false,
     });
 
