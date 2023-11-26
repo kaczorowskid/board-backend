@@ -10,7 +10,7 @@ export const authorizationService = async ({
   token,
 }: AuthorizeUserRequest): Promise<AuthorizationService> => {
   const authorization = async (): Promise<UserModel | null> => {
-    const userId = jwt.verify(token as string, process.env.EMAIL_KEY!) as {
+    const userId = jwt.verify(token as string, process.env.ACCESS_KEY!) as {
       id: string;
     };
 

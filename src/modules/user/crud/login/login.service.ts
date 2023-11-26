@@ -26,9 +26,13 @@ export const loginUserService = async ({
   };
 
   const generateAccessToken = async (userData: UserModel | null) => {
-    const accessToken = jwt.sign({ id: userData?.id }, process.env.EMAIL_KEY!, {
-      expiresIn: "2h",
-    });
+    const accessToken = jwt.sign(
+      { id: userData?.id },
+      process.env.ACCESS_KEY!,
+      {
+        expiresIn: "2h",
+      }
+    );
 
     return accessToken;
   };

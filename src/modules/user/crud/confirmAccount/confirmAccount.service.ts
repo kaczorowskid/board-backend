@@ -10,7 +10,7 @@ export const confirmAccountService = async ({
   token,
 }: ConfirmAccountUserRequest): Promise<ConfirmAccountService> => {
   const confirm = async (): Promise<boolean> => {
-    const userId = jwt.verify(token as string, process.env.EMAIL_KEY!) as {
+    const userId = jwt.verify(token as string, process.env.ACCESS_KEY!) as {
       id: string;
     };
 
