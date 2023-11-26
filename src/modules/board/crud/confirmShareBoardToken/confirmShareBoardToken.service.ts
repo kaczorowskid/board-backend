@@ -13,7 +13,7 @@ export const confirmShareBoardTokenService = async ({
   user_id,
 }: ConfirmShareTokenRequest): Promise<ConfirmShareBoardTokenService> => {
   const boardData = async (): Promise<BoardModel | null> => {
-    const { board_id } = jwt.verify(token, process.env.SHARE_BOARD_KEY!) as {
+    const { board_id } = jwt.verify(token, process.env.ACCESS_KEY!) as {
       board_id: string;
     };
 

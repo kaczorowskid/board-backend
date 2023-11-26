@@ -21,7 +21,7 @@ export const createShareBoardTokenService = async ({
   };
 
   const createToken = (): string => {
-    const token = jwt.sign({ board_id }, process.env.SHARE_BOARD_KEY!, {
+    const token = jwt.sign({ board_id }, process.env.ACCESS_KEY!, {
       expiresIn: "1d",
     });
 

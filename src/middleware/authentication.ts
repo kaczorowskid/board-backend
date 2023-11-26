@@ -11,7 +11,7 @@ export const authentication = async (
   next: NextFunction
 ) => {
   const token = req.cookies.JWT;
-  const secret = process.env.EMAIL_KEY;
+  const secret = process.env.ACCESS_KEY;
 
   try {
     const verifyResponse = jwt.verify(token, secret as string) as UserModel;

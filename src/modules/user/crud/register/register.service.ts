@@ -28,7 +28,7 @@ export const registerUserService = async ({
 
     mailer({
       type: MailType.CONFIRM,
-      token: jwt.sign({ id: data.id }, process.env.EMAIL_KEY!, {
+      token: jwt.sign({ id: data.id }, process.env.ACCESS_KEY!, {
         expiresIn: "1d",
       }),
       to: email,

@@ -11,7 +11,7 @@ export const resetPasswordService = async ({
 
     const resetPasswordToken = jwt.sign(
       { id: user?.id },
-      process.env.RESET_PASSWORD_KEY!,
+      process.env.ACCESS_KEY!,
       {
         expiresIn: "1d",
       }
