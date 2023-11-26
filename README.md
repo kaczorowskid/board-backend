@@ -27,9 +27,6 @@ DB_HOST = localhost
 DB_DIALECT = mysql
 
 ACCESS_KEY= *generated access key*
-EMAIL_KEY= *generated email key*
-RESET_PASSWORD_KEY= *generated reset password key*
-SHARE_BOARD_KEY= *generated share board key*
 
 FRONTEND_URL_ORIGIN_DEV = http://localhost:3000
 FRONTEND_URL_ORIGIN_PROD = http://localhost:3000
