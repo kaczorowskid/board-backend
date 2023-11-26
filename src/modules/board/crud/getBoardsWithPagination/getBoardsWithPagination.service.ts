@@ -44,7 +44,7 @@ export const getBoardsWithPaginationService = async ({
         id: boardsIds,
         ...(searchValue
           ? {
-              name: {
+              title: {
                 [Op.like]: `%${searchValue}%`,
               },
             }
