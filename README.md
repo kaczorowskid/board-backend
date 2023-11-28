@@ -45,3 +45,6 @@ npm run dev
 ```
 npm run build
 ```
+
+# Todo
+- improve http codes (not all codes are correct)
