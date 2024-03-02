@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 import { CreateBoardRequest } from "../../../../contracts/board/board.type";
 import { BoardModel, SharedBoardModel } from "../../../../models";
+import { sequelizeInstance } from "../../../../database";
 
 interface CreateBoardService {
-  createBoard: (boardId: string) => Promise<BoardModel>;
-  createSharedBoard: (boardId: string) => Promise<SharedBoardModel>;
+  createBoard: () => Promise<BoardModel>;
 }
 
 export const createBoardService = async ({
@@ -12,32 +12,36 @@ export const createBoardService = async ({
   description,
   user_id,
 }: CreateBoardRequest): Promise<CreateBoardService> => {
-  const createBoard = async (boardId: string): Promise<BoardModel> => {
-    const data = await BoardModel.create({
-      id: boardId,
-      title,
-      description,
-      user_id,
-      owner_id: user_id,
-    });
+  const createBoard = async (): Promise<BoardModel> => {
+    const transaction = await sequelizeInstance.transaction();
+    const boardId = uuidv4();
 
-    return data;
-  };
+    const data = await BoardModel.create(
+      {
+        id: boardId,
+        title,
+        description,
+        user_id,
+        owner_id: user_id,
+      },
+      { transaction }
+    );
 
-  const createSharedBoard = async (
-    boardId: string
-  ): Promise<SharedBoardModel> => {
-    const data = await SharedBoardModel.create({
-      id: uuidv4(),
-      user_id,
-      board_id: boardId,
-    });
+    await SharedBoardModel.create(
+      {
+        id: uuidv4(),
+        user_id,
+        board_id: boardId,
+      },
+      { transaction }
+    );
+
+    transaction.commit();
 
     return data;
   };
 
   return {
     createBoard,
-    createSharedBoard,
   };
 };

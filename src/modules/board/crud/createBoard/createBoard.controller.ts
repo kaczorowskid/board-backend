@@ -12,14 +12,9 @@ export const createBoard: ExpressMiddleware<
 > = async (req, res) => {
   try {
     const request = createBoardRequestSchema.parse(req.body);
-    const { createBoard, createSharedBoard } = await createBoardService(
-      request
-    );
+    const { createBoard } = await createBoardService(request);
 
-    const boardId = uuidv4();
-
-    const result = await createBoard(boardId);
-    await createSharedBoard(boardId);
+    const result = await createBoard();
 
     res.status(HTTPStatus.CREATED).send(result);
   } catch (error) {
